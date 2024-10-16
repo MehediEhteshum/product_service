@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "start": "deno run --watch --allow-read --allow-env --allow-net ./src/main.ts"
+  },
+  "imports": {
+    "@nestjs/cli": "npm:@nestjs/cli@^10.4.5",
+    "@nestjs/common": "npm:@nestjs/common@^10.4.5",
+    "@nestjs/platform-express": "npm:@nestjs/platform-express@^10.4.5",
+    "dotenv": "npm:dotenv@^16.4.5",
+    "reflect-metadata": "npm:reflect-metadata@^0.2.2",
+    "rxjs": "npm:rxjs@^7.8.1"
+  },
+  "nodeModulesDir": "auto",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+}
