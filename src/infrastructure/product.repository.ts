@@ -1,4 +1,4 @@
-import { Injectable } from 'npm:@nestjs/common';
+import { Injectable } from "npm:@nestjs/common";
 import { PrismaService } from "./database/prisma.service.ts";
 import { Product } from "../domain/product.entity.ts";
 
