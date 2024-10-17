@@ -14,7 +14,7 @@ export class Product {
   @Field()
   price: number = 0;
 
-  @Field()
+  @Field(() => Int)
   stock: number = 0;
 
   @Field({ nullable: true })
