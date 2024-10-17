@@ -1,0 +1,9 @@
+{
+  "prisma": {
+    "schema": "./src/infrastructure/database/prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.21.1",
+    "prisma": "^5.21.1"
+  }
+}

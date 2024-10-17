@@ -1,5 +1,5 @@
-import { Injectable } from 'npm:@nestjs/common';
-import { PrismaClient } from 'npm:@prisma/client';
+import { Injectable } from "npm:@nestjs/common";
+import { PrismaClient } from "npm:@prisma/client";
 import { Product } from "../domain/product.entity.ts";
 
 const prisma = new PrismaClient();
