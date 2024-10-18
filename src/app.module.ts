@@ -11,7 +11,6 @@ import { ProductRepository } from "./infrastructure/product.repository.ts";
       autoSchemaFile: true,
     }),
   ],
-  providers: [ProductRepository],
-  controllers: [ProductController],
+  providers: [ProductRepository, ProductController],
 })
 export class AppModule {}

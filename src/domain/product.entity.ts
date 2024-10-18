@@ -1,6 +1,7 @@
-import { Field, Int, ObjectType } from "npm:@nestjs/graphql";
+import { Field, InputType, Int, ObjectType } from "npm:@nestjs/graphql";
 
 @ObjectType()
+@InputType("ProductInput")
 export class Product {
   @Field(() => Int)
   id: number = 0;
@@ -9,7 +10,7 @@ export class Product {
   name: string = "";
 
   @Field({ nullable: true })
-  description: string | null = null;
+  description: string = "";
 
   @Field()
   price: number = 0;
@@ -18,10 +19,10 @@ export class Product {
   stock: number = 0;
 
   @Field({ nullable: true })
-  imageUrl: string | null = null;
+  imageUrl: string = "";
 
   @Field({ nullable: true })
-  category: string | null = null;
+  category: string = "";
 
   @Field(() => Date)
   createdAt: Date = new Date();
