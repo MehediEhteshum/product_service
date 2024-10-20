@@ -1,6 +1,5 @@
 import { NestFactory } from "npm:@nestjs/core";
 import { AppModule } from "./app.module.ts";
-import process from "node:process";
 import { init } from "./core/init.ts";
 
 async function bootstrap() {

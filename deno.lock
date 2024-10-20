@@ -10,14 +10,11 @@
     "npm:@nestjs/graphql@*": "12.2.0_@nestjs+common@10.4.5__reflect-metadata@0.2.2__rxjs@7.8.1_@nestjs+core@10.4.5__@nestjs+common@10.4.5___reflect-metadata@0.2.2___rxjs@7.8.1__@nestjs+platform-express@10.4.5___@nestjs+common@10.4.5____reflect-metadata@0.2.2____rxjs@7.8.1___@nestjs+core@10.4.5____@nestjs+common@10.4.5_____reflect-metadata@0.2.2_____rxjs@7.8.1____@nestjs+platform-express@10.4.5____reflect-metadata@0.2.2____rxjs@7.8.1___reflect-metadata@0.2.2___rxjs@7.8.1__reflect-metadata@0.2.2__rxjs@7.8.1_graphql@16.9.0_reflect-metadata@0.2.2_rxjs@7.8.1_@nestjs+platform-express@10.4.5__@nestjs+common@10.4.5___reflect-metadata@0.2.2___rxjs@7.8.1__@nestjs+core@10.4.5___@nestjs+common@10.4.5____reflect-metadata@0.2.2____rxjs@7.8.1___@nestjs+platform-express@10.4.5___reflect-metadata@0.2.2___rxjs@7.8.1__reflect-metadata@0.2.2__rxjs@7.8.1",
     "npm:@nestjs/graphql@^12.2.0": "12.2.0_@nestjs+common@10.4.5__reflect-metadata@0.2.2__rxjs@7.8.1_@nestjs+core@10.4.5__@nestjs+common@10.4.5___reflect-metadata@0.2.2___rxjs@7.8.1__@nestjs+platform-express@10.4.5___@nestjs+common@10.4.5____reflect-metadata@0.2.2____rxjs@7.8.1___@nestjs+core@10.4.5____@nestjs+common@10.4.5_____reflect-metadata@0.2.2_____rxjs@7.8.1____@nestjs+platform-express@10.4.5____reflect-metadata@0.2.2____rxjs@7.8.1___reflect-metadata@0.2.2___rxjs@7.8.1__reflect-metadata@0.2.2__rxjs@7.8.1_graphql@16.9.0_reflect-metadata@0.2.2_rxjs@7.8.1_@nestjs+platform-express@10.4.5__@nestjs+common@10.4.5___reflect-metadata@0.2.2___rxjs@7.8.1__@nestjs+core@10.4.5___@nestjs+common@10.4.5____reflect-metadata@0.2.2____rxjs@7.8.1___@nestjs+platform-express@10.4.5___reflect-metadata@0.2.2___rxjs@7.8.1__reflect-metadata@0.2.2__rxjs@7.8.1",
     "npm:@nestjs/platform-express@^10.4.5": "10.4.5_@nestjs+common@10.4.5__reflect-metadata@0.2.2__rxjs@7.8.1_@nestjs+core@10.4.5__@nestjs+common@10.4.5___reflect-metadata@0.2.2___rxjs@7.8.1__@nestjs+platform-express@10.4.5__reflect-metadata@0.2.2__rxjs@7.8.1_reflect-metadata@0.2.2_rxjs@7.8.1",
-    "npm:@prisma/client@*": "5.21.1_prisma@5.21.1",
     "npm:@prisma/client@^5.21.1": "5.21.1_prisma@5.21.1",
     "npm:apollo-server-express@^3.13.0": "3.13.0_express@4.21.1_graphql@16.9.0",
     "npm:dotenv@^16.4.5": "16.4.5",
     "npm:graphql@^16.9.0": "16.9.0",
-    "npm:prisma@*": "5.21.1",
     "npm:prisma@5.21.1": "5.21.1",
-    "npm:prisma@^5.21.1": "5.21.1",
     "npm:reflect-metadata@~0.2.2": "0.2.2",
     "npm:rxjs@^7.8.1": "7.8.1"
   },
@@ -158,7 +155,7 @@
         "graphql",
         "loglevel",
         "lru-cache@7.18.3",
-        "negotiator",
+        "negotiator@0.6.4",
         "node-abort-controller",
         "node-fetch",
         "uuid",
@@ -930,7 +927,7 @@
       "integrity": "sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==",
       "dependencies": [
         "mime-types",
-        "negotiator"
+        "negotiator@0.6.3"
       ]
     },
     "acorn-import-attributes@1.9.5_acorn@8.13.0": {
@@ -2050,6 +2047,9 @@
     "negotiator@0.6.3": {
       "integrity": "sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg=="
     },
+    "negotiator@0.6.4": {
+      "integrity": "sha512-myRT3DiWPHqho5PrJaIRyaMv2kgYf0mUVgBNOYMuCH5Ki1yEiQaf/ZJuQ62nvpc44wL5WDbTX7yGJi1Neevw8w=="
+    },
     "neo-async@2.6.2": {
       "integrity": "sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw=="
     },
@@ -2731,12 +2731,6 @@
       "npm:prisma@5.21.1",
       "npm:reflect-metadata@~0.2.2",
       "npm:rxjs@^7.8.1"
-    ],
-    "packageJson": {
-      "dependencies": [
-        "npm:@prisma/client@^5.21.1",
-        "npm:prisma@^5.21.1"
-      ]
-    }
+    ]
   }
 }

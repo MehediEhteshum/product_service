@@ -1,7 +1,7 @@
 import { Module } from "npm:@nestjs/common";
 import { GraphQLModule } from "npm:@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "npm:@nestjs/apollo";
-import { ProductController } from "./application/product.controller.ts";
+import { ProductService } from "./application/product.service.ts";
 import { ProductRepository } from "./infrastructure/product.repository.ts";
 
 @Module({
@@ -15,6 +15,6 @@ import { ProductRepository } from "./infrastructure/product.repository.ts";
       introspection: true, // false for production
     }),
   ],
-  providers: [ProductRepository, ProductController],
+  providers: [ProductRepository, ProductService],
 })
 export class AppModule {}
