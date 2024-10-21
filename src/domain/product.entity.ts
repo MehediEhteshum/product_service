@@ -1,4 +1,4 @@
-import { Field, InputType, Int, ObjectType } from "npm:@nestjs/graphql";
+import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @InputType("ProductInput")

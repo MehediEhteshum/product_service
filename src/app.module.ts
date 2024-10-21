@@ -1,6 +1,6 @@
-import { Module } from "npm:@nestjs/common";
-import { GraphQLModule } from "npm:@nestjs/graphql";
-import { ApolloDriver, ApolloDriverConfig } from "npm:@nestjs/apollo";
+import { Module } from "@nestjs/common";
+import { GraphQLModule } from "@nestjs/graphql";
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ProductService } from "./application/product.service.ts";
 import { ProductRepository } from "./infrastructure/product.repository.ts";
 

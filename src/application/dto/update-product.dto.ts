@@ -1,4 +1,4 @@
-import { InputType, PartialType } from "npm:@nestjs/graphql";
+import { InputType, PartialType } from "@nestjs/graphql";
 import { CreateProductDto } from "./create-product.dto.ts";
 
 @InputType()

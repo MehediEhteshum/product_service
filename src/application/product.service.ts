@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from "npm:@nestjs/graphql";
+import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { ProductRepository } from "../infrastructure/product.repository.ts";
 import { Product } from "../domain/product.entity.ts";
 
