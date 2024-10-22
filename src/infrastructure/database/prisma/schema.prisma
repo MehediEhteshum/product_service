@@ -10,13 +10,13 @@ datasource db {
 }
 
 model Product {
-  id        Int      @id @default(autoincrement())
-  name      String
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String
   description String
-  imageUrl  String
-  category  String
-  price     Float
-  stock     Int
-  createdAt DateTime
-  updatedAt DateTime
+  imageUrl    String
+  category    String
+  price       Float
+  stock       Int
+  createdAt   DateTime
+  updatedAt   DateTime
 }

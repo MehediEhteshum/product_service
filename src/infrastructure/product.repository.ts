@@ -18,12 +18,12 @@ export class ProductRepository {
     return products;
   }
 
-  async findOne(id: number): Promise<Product | null> {
+  async findOne(id: string): Promise<Product | null> {
     const product = await prisma.product.findUnique({ where: { id } });
     return product;
   }
 
-  async update(id: number, product: Product): Promise<Product | null> {
+  async update(id: string, product: Product): Promise<Product | null> {
     const updatedProduct = await prisma.product.update({
       where: { id },
       data: product,
@@ -31,7 +31,7 @@ export class ProductRepository {
     return updatedProduct;
   }
 
-  async remove(id: number): Promise<Product | null> {
+  async remove(id: string): Promise<Product | null> {
     const deletedProduct = await prisma.product.delete({
       where: { id },
     });

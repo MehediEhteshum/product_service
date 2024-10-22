@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { Product } from "../domain/product.entity.ts";
 import { ProductRepository } from "../infrastructure/product.repository.ts";
 import { CreateProductReq, UpdateProductReq } from "./dto/product.dto.ts";
@@ -10,12 +10,14 @@ export class ProductService {
   @Query(() => [Product])
   async findAll(): Promise<Product[]> {
     const products = await this.productRepository.findAll();
-    return products.sort((a, b) => a.id - b.id);
+    return products.sort(
+      (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()
+    );
   }
 
   @Query(() => Product, { nullable: true })
   async findOne(
-    @Args("id", { type: () => Int }) id: number
+    @Args("id", { type: () => ID }) id: string
   ): Promise<Product | null> {
     return await this.productRepository.findOne(id);
   }
@@ -37,7 +39,7 @@ export class ProductService {
 
   @Mutation(() => Product, { nullable: true })
   async update(
-    @Args("id", { type: () => Int }) id: number,
+    @Args("id", { type: () => ID }) id: string,
     @Args("updateProductData") updateProductData: UpdateProductReq
   ): Promise<Product | null> {
     const existingProduct = await this.findOne(id);
@@ -61,7 +63,7 @@ export class ProductService {
 
   @Mutation(() => Product, { nullable: true })
   async remove(
-    @Args("id", { type: () => Int }) id: number
+    @Args("id", { type: () => ID }) id: string
   ): Promise<Product | null> {
     return await this.productRepository.remove(id);
   }
