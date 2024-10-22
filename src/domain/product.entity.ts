@@ -1,32 +1,31 @@
-import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
+import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
-@InputType("ProductInput")
 export class Product {
-  @Field(() => Int)
-  id: number = 0;
+  @Field(() => ID)
+  id: number;
 
   @Field()
-  name: string = "";
+  name: string;
 
   @Field({ nullable: true })
-  description: string = "";
+  description: string;
+
+  @Field({ nullable: true })
+  imageUrl: string;
+
+  @Field({ nullable: true })
+  category: string;
 
   @Field()
-  price: number = 0;
+  price: number;
 
   @Field(() => Int)
-  stock: number = 0;
+  stock: number;
 
-  @Field({ nullable: true })
-  imageUrl: string = "";
+  @Field()
+  createdAt: Date;
 
-  @Field({ nullable: true })
-  category: string = "";
-
-  @Field(() => Date)
-  createdAt: Date = new Date();
-
-  @Field(() => Date)
-  updatedAt: Date = new Date();
+  @Field()
+  updatedAt: Date;
 }

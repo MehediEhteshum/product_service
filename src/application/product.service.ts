@@ -1,40 +1,68 @@
 import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { ProductRepository } from "../infrastructure/product.repository.ts";
 import { Product } from "../domain/product.entity.ts";
+import { ProductRepository } from "../infrastructure/product.repository.ts";
+import { CreateProductReq, UpdateProductReq } from "./dto/product.dto.ts";
 
 @Resolver(() => Product)
 export class ProductService {
   constructor(private productRepository: ProductRepository) {}
 
   @Query(() => [Product])
-  findAll(): Promise<Product[]> {
-    return this.productRepository.findAll();
+  async findAll(): Promise<Product[]> {
+    const products = await this.productRepository.findAll();
+    return products.sort((a, b) => a.id - b.id);
   }
 
   @Query(() => Product, { nullable: true })
-  findOne(
+  async findOne(
     @Args("id", { type: () => Int }) id: number
   ): Promise<Product | null> {
-    return this.productRepository.findOne(id);
+    return await this.productRepository.findOne(id);
   }
 
   @Mutation(() => Product)
-  create(
-    @Args("createProductData") createProductData: Product
+  async create(
+    @Args("createProductData") createProductData: CreateProductReq
   ): Promise<Product> {
-    return this.productRepository.create(createProductData);
+    const productData: Omit<Product, "id"> = {
+      ...createProductData,
+      description: createProductData.description ?? "",
+      imageUrl: createProductData.imageUrl ?? "",
+      category: createProductData.category ?? "",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    return await this.productRepository.create(productData);
   }
 
   @Mutation(() => Product, { nullable: true })
-  update(
+  async update(
     @Args("id", { type: () => Int }) id: number,
-    @Args("updateProductData") updateProductData: Product
+    @Args("updateProductData") updateProductData: UpdateProductReq
   ): Promise<Product | null> {
-    return this.productRepository.update(id, updateProductData);
+    const existingProduct = await this.findOne(id);
+    if (existingProduct) {
+      const updatedData: Product = {
+        id: existingProduct.id,
+        name: updateProductData.name ?? existingProduct.name,
+        description:
+          updateProductData.description ?? existingProduct.description,
+        imageUrl: updateProductData.imageUrl ?? existingProduct.imageUrl,
+        category: updateProductData.category ?? existingProduct.category,
+        price: updateProductData.price ?? existingProduct.price,
+        stock: updateProductData.stock ?? existingProduct.stock,
+        createdAt: existingProduct.createdAt,
+        updatedAt: new Date(),
+      };
+      return await this.productRepository.update(id, updatedData);
+    }
+    return null;
   }
 
   @Mutation(() => Product, { nullable: true })
-  remove(@Args("id", { type: () => Int }) id: number): Promise<Product | null> {
-    return this.productRepository.remove(id);
+  async remove(
+    @Args("id", { type: () => Int }) id: number
+  ): Promise<Product | null> {
+    return await this.productRepository.remove(id);
   }
 }

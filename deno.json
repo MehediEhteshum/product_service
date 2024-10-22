@@ -6,6 +6,7 @@
     "@nestjs/apollo": "npm:@nestjs/apollo@^12.2.0",
     "@nestjs/cli": "npm:@nestjs/cli@^10.4.5",
     "@nestjs/common": "npm:@nestjs/common@^10.4.5",
+    "@nestjs/core": "npm:@nestjs/core@^10.4.5",
     "@nestjs/graphql": "npm:@nestjs/graphql@^12.2.0",
     "@nestjs/platform-express": "npm:@nestjs/platform-express@^10.4.5",
     "@prisma/client": "npm:@prisma/client@^5.21.1",
@@ -14,7 +15,9 @@
     "graphql": "npm:graphql@^16.9.0",
     "prisma": "npm:prisma@5.21.1",
     "reflect-metadata": "npm:reflect-metadata@^0.2.2",
-    "rxjs": "npm:rxjs@^7.8.1"
+    "rxjs": "npm:rxjs@^7.8.1",
+    "class-validator": "npm:class-validator@^0.14.1",
+    "class-transformer": "npm:class-transformer@^0.5.1"
   },
   "nodeModulesDir": "auto",
   "compilerOptions": {

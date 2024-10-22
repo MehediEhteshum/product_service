@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class ProductRepository {
-  async create(product: Product): Promise<Product> {
+  async create(product: Omit<Product, "id">): Promise<Product> {
     const createdProduct = await prisma.product.create({
       data: product,
     });

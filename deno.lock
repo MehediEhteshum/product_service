@@ -13,6 +13,8 @@
     "npm:@nestjs/platform-express@^10.4.5": "10.4.5_@nestjs+common@10.4.5__reflect-metadata@0.2.2__rxjs@7.8.1_@nestjs+core@10.4.5__@nestjs+common@10.4.5___reflect-metadata@0.2.2___rxjs@7.8.1__@nestjs+platform-express@10.4.5__reflect-metadata@0.2.2__rxjs@7.8.1_reflect-metadata@0.2.2_rxjs@7.8.1",
     "npm:@prisma/client@^5.21.1": "5.21.1_prisma@5.21.1",
     "npm:apollo-server-express@^3.13.0": "3.13.0_express@4.21.1_graphql@16.9.0",
+    "npm:class-transformer@~0.5.1": "0.5.1",
+    "npm:class-validator@~0.14.1": "0.14.1",
     "npm:dotenv@^16.4.5": "16.4.5",
     "npm:graphql@^16.9.0": "16.9.0",
     "npm:prisma@5.21.1": "5.21.1",
@@ -817,6 +819,9 @@
         "@types/send"
       ]
     },
+    "@types/validator@13.12.2": {
+      "integrity": "sha512-6SlHBzUW8Jhf3liqrGGXyTJSIFe4nqlJ5A5KaMZ2l/vbM3Wh3KSybots/wfWVzNLK4D1NZluDlSQIbIEPx6oyA=="
+    },
     "@webassemblyjs/ast@1.12.1": {
       "integrity": "sha512-EKfMUOPRRUTy5UII4qJDGPpqfwjOmZ5jeGFwid9mnoqIFK+e0vqoi1qH56JpmZSzEL53jKnNzScdmftJyG5xWg==",
       "dependencies": [
@@ -1253,6 +1258,17 @@
     },
     "chrome-trace-event@1.0.4": {
       "integrity": "sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ=="
+    },
+    "class-transformer@0.5.1": {
+      "integrity": "sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw=="
+    },
+    "class-validator@0.14.1": {
+      "integrity": "sha512-2VEG9JICxIqTpoK1eMzZqaV+u/EiwEJkMGzTrZf6sU/fwsnOITVgYJ8yojSy6CaXtO9V0Cc6ZQZ8h8m4UBuLwQ==",
+      "dependencies": [
+        "@types/validator",
+        "libphonenumber-js",
+        "validator"
+      ]
     },
     "cli-cursor@3.1.0": {
       "integrity": "sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==",
@@ -1904,6 +1920,9 @@
         "graceful-fs",
         "universalify"
       ]
+    },
+    "libphonenumber-js@1.11.12": {
+      "integrity": "sha512-QkJn9/D7zZ1ucvT++TQSvZuSA2xAWeUytU+DiEQwbPKLyrDpvbul2AFs1CGbRAPpSCCk47aRAb5DX5mmcayp4g=="
     },
     "lines-and-columns@1.2.4": {
       "integrity": "sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg=="
@@ -2596,6 +2615,9 @@
     "uuid@9.0.1": {
       "integrity": "sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA=="
     },
+    "validator@13.12.0": {
+      "integrity": "sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg=="
+    },
     "value-or-promise@1.0.11": {
       "integrity": "sha512-41BrgH+dIbCFXClcSapVs5M6GkENd3gQOJpEfPDNa71LsUGMXDL0jMWpI/Rh7WhX+Aalfz2TTS3Zt5pUsbnhLg=="
     },
@@ -2723,20 +2745,18 @@
       "npm:@nestjs/apollo@^12.2.0",
       "npm:@nestjs/cli@^10.4.5",
       "npm:@nestjs/common@^10.4.5",
+      "npm:@nestjs/core@^10.4.5",
       "npm:@nestjs/graphql@^12.2.0",
       "npm:@nestjs/platform-express@^10.4.5",
       "npm:@prisma/client@^5.21.1",
       "npm:apollo-server-express@^3.13.0",
+      "npm:class-transformer@~0.5.1",
+      "npm:class-validator@~0.14.1",
       "npm:dotenv@^16.4.5",
       "npm:graphql@^16.9.0",
       "npm:prisma@5.21.1",
       "npm:reflect-metadata@~0.2.2",
       "npm:rxjs@^7.8.1"
-    ],
-    "packageJson": {
-      "dependencies": [
-        "npm:@nestjs/core@^10.4.5"
-      ]
-    }
+    ]
   }
 }
