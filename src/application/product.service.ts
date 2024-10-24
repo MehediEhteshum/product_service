@@ -1,9 +1,8 @@
 import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { TTL } from "../core/constants.ts";
-import { Product } from "../domain/product.entity.ts";
-import { CacheService } from "../infrastructure/cache.service.ts";
-import { ProductRepository } from "../infrastructure/product.repository.ts";
-import { CreateProductReq, UpdateProductReq } from "./dto/product.dto.ts";
+import { TTL } from "../core/index.ts";
+import { Product } from "../domain/index.ts";
+import { CacheService, ProductRepository } from "../infrastructure/index.ts";
+import { CreateProductReq, UpdateProductReq } from "./index.ts";
 
 @Resolver(() => Product)
 export class ProductService {

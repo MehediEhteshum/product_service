@@ -1,9 +1,8 @@
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
-import { ProductService } from "./application/product.service.ts";
-import { CacheService } from "./infrastructure/cache.service.ts";
-import { ProductRepository } from "./infrastructure/product.repository.ts";
+import { ProductService } from "./application/index.ts";
+import { CacheService, ProductRepository } from "./infrastructure/index.ts";
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "../../node_modules/.prisma/client/index.js";
-import { Product } from "../domain/product.entity.ts";
+import { Product } from "../domain/index.ts";
 
 const prisma = new PrismaClient();
 
