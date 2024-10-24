@@ -1,4 +1,5 @@
 import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { TTL } from "../core/constants.ts";
 import { Product } from "../domain/product.entity.ts";
 import { CacheService } from "../infrastructure/cache.service.ts";
 import { ProductRepository } from "../infrastructure/product.repository.ts";
@@ -32,13 +33,13 @@ export class ProductService {
       foundProduct = JSON.parse(cachedProduct);
       foundProduct!.createdAt = new Date(foundProduct!.createdAt);
       foundProduct!.updatedAt = new Date(foundProduct!.updatedAt);
+      await this.cacheStore.extendTTL(id, TTL / 2);
     } else {
       foundProduct = await this.productRepository.findOne(id);
       if (foundProduct) {
         await this.cacheStore.set(
           foundProduct.id,
-          JSON.stringify(foundProduct),
-          300
+          JSON.stringify(foundProduct)
         );
       }
     }
@@ -61,8 +62,7 @@ export class ProductService {
     if (createdProduct) {
       await this.cacheStore.set(
         createdProduct.id,
-        JSON.stringify(createdProduct),
-        300
+        JSON.stringify(createdProduct)
       );
     }
     return createdProduct;
@@ -94,8 +94,7 @@ export class ProductService {
       if (updatedProduct) {
         await this.cacheStore.set(
           updatedProduct.id,
-          JSON.stringify(updatedProduct),
-          300
+          JSON.stringify(updatedProduct)
         );
       }
       return updatedProduct;
