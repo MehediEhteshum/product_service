@@ -1,14 +1,19 @@
 import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { TTL } from "../core/index.ts";
 import { Product } from "../domain/index.ts";
-import { CacheService, ProductRepository } from "../infrastructure/index.ts";
+import {
+  CacheService,
+  ProductRepository,
+  SearchService,
+} from "../infrastructure/index.ts";
 import { CreateProductReq, UpdateProductReq } from "./index.ts";
 
 @Resolver(() => Product)
 export class ProductService {
   constructor(
     private productRepository: ProductRepository,
-    private cacheStore: CacheService
+    private cacheStore: CacheService,
+    private searchService: SearchService
   ) {}
 
   @Query(() => [Product])
@@ -63,6 +68,7 @@ export class ProductService {
         createdProduct.id,
         JSON.stringify(createdProduct)
       );
+      await this.searchService.index("products", createdProduct);
     }
     return createdProduct;
   }
@@ -95,6 +101,7 @@ export class ProductService {
           updatedProduct.id,
           JSON.stringify(updatedProduct)
         );
+        await this.searchService.index("products", updatedProduct);
       }
       return updatedProduct;
     }
@@ -108,7 +115,13 @@ export class ProductService {
     const deletedProduct = await this.productRepository.remove(id);
     if (deletedProduct) {
       await this.cacheStore.del(deletedProduct.id);
+      await this.searchService.delete("products", deletedProduct.id);
     }
     return deletedProduct;
+  }
+
+  @Query(() => [Product])
+  async search(@Args("query") query: string): Promise<Product[]> {
+    return await this.searchService.search(query);
   }
 }

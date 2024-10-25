@@ -18,7 +18,8 @@
     "rxjs": "npm:rxjs@^7.8.1",
     "class-validator": "npm:class-validator@^0.14.1",
     "class-transformer": "npm:class-transformer@^0.5.1",
-    "ioredis": "npm:ioredis@^5.4.1"
+    "ioredis": "npm:ioredis@^5.4.1",
+    "@elastic/elasticsearch": "npm:@elastic/elasticsearch@^8.15.1"
   },
   "nodeModulesDir": "auto",
   "compilerOptions": {
