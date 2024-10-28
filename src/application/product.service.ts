@@ -14,7 +14,13 @@ export class ProductService {
     private productRepository: ProductRepository,
     private cacheStore: CacheService,
     private searchService: SearchService
-  ) {}
+  ) {
+    this.initializeSearchIndex();
+  }
+
+  private async initializeSearchIndex() {
+    await this.searchService.createCustomIndex("products");
+  }
 
   @Query(() => [Product])
   async findAll(): Promise<Product[]> {

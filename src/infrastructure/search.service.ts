@@ -1,5 +1,6 @@
 import { Client } from "@elastic/elasticsearch";
 import { Injectable, Logger } from "@nestjs/common";
+import { CUSTOM_INDEX_SETTING } from "../core/index.ts";
 import { Product } from "../domain/index.ts";
 
 @Injectable()
@@ -8,7 +9,27 @@ export class SearchService {
   private readonly logger = new Logger(SearchService.name);
 
   constructor() {
-    this.searchClient = new Client({ node: "http://localhost:9200" });
+    this.searchClient = new Client({ node: process.env.ES_URL });
+  }
+
+  async createCustomIndex(index: string): Promise<void> {
+    try {
+      const indexExists = await this.searchClient.indices.exists({ index });
+      if (!indexExists) {
+        await this.searchClient.indices.create({
+          index: index,
+          body: CUSTOM_INDEX_SETTING,
+        });
+        this.logger.log(
+          `Index ${index} with custom settings created successfully.`
+        );
+      } else {
+        this.logger.log(`Index ${index} already exists.`);
+      }
+    } catch (error) {
+      this.logger.error(`Failed to create index ${index}`, error.stack);
+      throw new Error(`Index creation failed: ${error.message}`);
+    }
   }
 
   async index(index: string, product: Product): Promise<void> {
