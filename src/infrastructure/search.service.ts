@@ -27,8 +27,8 @@ export class SearchService {
         this.logger.log(`Index ${index} already exists.`);
       }
     } catch (error) {
-      this.logger.error(`Failed to create index ${index}`, error.stack);
-      throw new Error(`Index creation failed: ${error.message}`);
+      this.logger.error(`Failed to create index ${index}`, error);
+      throw new Error(`Index creation failed: ${JSON.stringify(error)}`);
     }
   }
 
@@ -41,11 +41,8 @@ export class SearchService {
       });
       this.logger.log(`Indexed product: ${product.name}`);
     } catch (error) {
-      this.logger.error(
-        `Failed to index product: ${product.name}`,
-        error.stack
-      );
-      throw new Error(`Indexing failed: ${error.message}`);
+      this.logger.error(`Failed to index product: ${product.name}`, error);
+      throw new Error(`Indexing failed: ${JSON.stringify(error)}`);
     }
   }
 
@@ -54,8 +51,8 @@ export class SearchService {
       await this.searchClient.delete({ index: index, id: id });
       this.logger.log(`Deleted product: ${id}`);
     } catch (error) {
-      this.logger.error(`Failed to delete product`, error.stack);
-      throw new Error(`Deletion failed: ${error.message}`);
+      this.logger.error(`Failed to delete product`, error);
+      throw new Error(`Deletion failed: ${JSON.stringify(error)}`);
     }
   }
 
@@ -73,8 +70,8 @@ export class SearchService {
       });
       return response.hits.hits.map((hit) => hit._source as Product);
     } catch (error) {
-      this.logger.error(`Search failed: ${searchQuery}`, error.stack);
-      throw new Error(`Search failed: ${error.message}`);
+      this.logger.error(`Search failed: ${searchQuery}`, error);
+      throw new Error(`Search failed: ${JSON.stringify(error)}`);
     }
   }
 }
