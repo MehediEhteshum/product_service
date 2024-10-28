@@ -7,7 +7,10 @@ export class CacheService {
   private redis: Redis;
 
   constructor() {
-    this.redis = new Redis();
+    this.redis = new Redis({
+      host: process.env.REDIS_HOST,
+      port: parseInt(process.env.REDIS_PORT!, 10) || 6379,
+    });
   }
 
   async set(key: string, value: string) {

@@ -20,6 +20,19 @@ services:
     volumes:
       - redis-data:/data
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: product.service.app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - elasticsearch
+      - redis
+    env_file:
+      - .env.docker
+
 volumes:
   redis-data:
   es-data:
