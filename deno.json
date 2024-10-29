@@ -2,7 +2,8 @@
   "tasks": {
     "install": "deno install --allow-scripts",
     "prisma": "npx prisma generate",
-    "start": "deno run --watch --allow-read --allow-env --allow-net --allow-sys --allow-ffi ./src/main.ts"
+    "start": "deno run --watch --allow-read --allow-env --allow-net --allow-sys --allow-ffi ./src/main.ts",
+    "docker": "docker compose up"
   },
   "imports": {
     "@nestjs/apollo": "npm:@nestjs/apollo@^12.2.0",
