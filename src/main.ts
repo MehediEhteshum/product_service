@@ -5,6 +5,7 @@ import { AppModule } from "./index.ts";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const port = process.env.PORT ?? 3000;
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -14,8 +15,10 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(`Application is running on: ${await app.getUrl()}/products`);
+  await app.listen(port);
+  let url = await app.getUrl();
+  url = url == `http://[::]:${port}` ? `http://localhost:${port}` : url;
+  console.log(`Application is running on: ${url}/products`);
 }
 init();
 bootstrap();
