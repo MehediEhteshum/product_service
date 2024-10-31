@@ -27,6 +27,7 @@ export class ProductService {
     await this.searchService.createCustomIndex("products");
   }
 
+  //@access public
   @Query(() => [Product])
   async findAll(): Promise<Product[]> {
     // ideally, it must have limit and offset
@@ -37,6 +38,7 @@ export class ProductService {
     );
   }
 
+  //@access public
   @Query(() => Product, { nullable: true })
   async findOne(
     @Args("id", { type: () => ID }) id: string
@@ -61,6 +63,7 @@ export class ProductService {
     return foundProduct;
   }
 
+  //@access private & RBAC
   @Mutation(() => Product)
   @UseGuards(AuthGuard, AdminRoleGuard)
   async create(
@@ -85,6 +88,7 @@ export class ProductService {
     return createdProduct;
   }
 
+  //@access private & RBAC
   @Mutation(() => Product, { nullable: true })
   @UseGuards(AuthGuard, AdminRoleGuard)
   async update(
@@ -121,6 +125,7 @@ export class ProductService {
     return null;
   }
 
+  //@access private & RBAC
   @Mutation(() => Product, { nullable: true })
   @UseGuards(AuthGuard, AdminRoleGuard)
   async remove(
@@ -134,6 +139,7 @@ export class ProductService {
     return deletedProduct;
   }
 
+  //@access public
   @Query(() => [Product])
   async search(
     @Args("searchProductData") searchProductData: SearchProductReq
