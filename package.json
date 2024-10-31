@@ -1,5 +1,8 @@
 {
   "prisma": {
     "schema": "./src/infrastructure/database/prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7"
   }
 }
