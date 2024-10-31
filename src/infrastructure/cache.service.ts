@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { Redis } from "ioredis";
 import { TTL } from "../core/index.ts";
 
 @Injectable()
 export class CacheService {
+  private readonly logger = new Logger(CacheService.name);
   private redis: Redis;
 
   constructor() {
@@ -14,23 +15,50 @@ export class CacheService {
   }
 
   async set(key: string, value: string) {
-    await this.redis.set(key, value, "EX", TTL);
+    try {
+      await this.redis.set(key, value, "EX", TTL);
+      this.logger.log(`Cache key set successfully`);
+    } catch (error) {
+      this.logger.error(`Failed to set cache key`, error);
+      throw new Error(`Failed to set cache key: ${JSON.stringify(error)}`);
+    }
   }
 
   async get(key: string) {
-    return await this.redis.get(key);
+    try {
+      const value = await this.redis.get(key);
+      this.logger.log(`Cache key retrieved successfully`);
+      return value;
+    } catch (error) {
+      this.logger.error(`Failed to get cache key`, error);
+      throw new Error(`Failed to get cache key: ${JSON.stringify(error)}`);
+    }
   }
 
   async del(key: string) {
-    await this.redis.del(key);
+    try {
+      await this.redis.del(key);
+      this.logger.log(`Cache key deleted successfully`);
+    } catch (error) {
+      this.logger.error(`Failed to delete cache key`, error);
+      throw new Error(`Failed to delete cache key: ${JSON.stringify(error)}`);
+    }
   }
 
   async extendTTL(key: string, ttlExtension: number) {
-    const currentTTL = await this.redis.ttl(key);
+    try {
+      const currentTTL = await this.redis.ttl(key);
 
-    if (currentTTL > 0 && currentTTL < TTL * 0.67) {
-      const newTTL = currentTTL + ttlExtension;
-      await this.redis.expire(key, newTTL);
+      if (currentTTL > 0 && currentTTL < TTL * 0.67) {
+        const newTTL = currentTTL + ttlExtension;
+        await this.redis.expire(key, newTTL);
+        this.logger.log(`TTL for cache key extended successfully`);
+      }
+    } catch (error) {
+      this.logger.error(`Failed to extend TTL for cache key`, error);
+      throw new Error(
+        `Failed to extend TTL for cache key: ${JSON.stringify(error)}`
+      );
     }
   }
 }

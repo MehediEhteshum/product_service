@@ -49,7 +49,7 @@ export class SearchService {
   async delete(index: string, id: string): Promise<void> {
     try {
       await this.searchClient.delete({ index: index, id: id });
-      this.logger.log(`Deleted product: ${id}`);
+      this.logger.log(`Deleted product`);
     } catch (error) {
       this.logger.error(`Failed to delete product`, error);
       throw new Error(`Deletion failed: ${JSON.stringify(error)}`);
@@ -74,6 +74,7 @@ export class SearchService {
         },
       });
 
+      this.logger.log(`Search successful: ${response.hits.hits.length} hits`);
       return response.hits.hits.map((hit) => {
         const product = hit._source as Product;
         product.createdAt = new Date(product.createdAt);
