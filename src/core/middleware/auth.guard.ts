@@ -12,9 +12,10 @@ export class AuthGuard implements CanActivate {
   private readonly logger = new Logger(AuthGuard.name);
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
+    const gqlContext = context.getArgByIndex(2);
+    const request = gqlContext?.req;
     const authHeader =
-      request.headers.authorization || request.headers.Authorization;
+      request?.headers?.authorization || request?.headers?.Authorization;
     const token = authHeader?.startsWith("Bearer")
       ? authHeader.split(" ")[1]
       : null;
