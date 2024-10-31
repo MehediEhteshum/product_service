@@ -1,4 +1,4 @@
-import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { TTL } from "../core/index.ts";
 import { Product } from "../domain/index.ts";
 import {
@@ -6,7 +6,11 @@ import {
   ProductRepository,
   SearchService,
 } from "../infrastructure/index.ts";
-import { CreateProductReq, UpdateProductReq } from "./index.ts";
+import {
+  CreateProductReq,
+  SearchProductReq,
+  UpdateProductReq,
+} from "./index.ts";
 
 @Resolver(() => Product)
 export class ProductService {
@@ -127,7 +131,74 @@ export class ProductService {
   }
 
   @Query(() => [Product])
-  async search(@Args("query") query: string): Promise<Product[]> {
-    return await this.searchService.search(query);
+  async search(
+    @Args("searchProductData") searchProductData: SearchProductReq
+  ): Promise<Product[]> {
+    let must: object[] = [];
+    let filter: object[] = [];
+
+    if (searchProductData.query) {
+      must.push({
+        bool: {
+          should: [
+            {
+              match: {
+                name: {
+                  query: searchProductData.query,
+                },
+              },
+            },
+            {
+              match: {
+                description: searchProductData.query,
+              },
+            },
+          ],
+          minimum_should_match: 1,
+        },
+      });
+    }
+
+    if (searchProductData.category) {
+      filter.push({
+        match: {
+          category: searchProductData.category,
+        },
+      });
+    }
+
+    if (searchProductData.minPrice || searchProductData.maxPrice) {
+      filter.push({
+        range: {
+          price: {
+            gte: searchProductData.minPrice ?? 0,
+            lte: searchProductData.maxPrice ?? Infinity,
+          },
+        },
+      });
+    }
+
+    if (searchProductData.minStock) {
+      filter.push({
+        range: {
+          stock: {
+            gte: searchProductData.minStock,
+          },
+        },
+      });
+    }
+
+    if (searchProductData.dateRange) {
+      filter.push({
+        range: {
+          updatedAt: {
+            gte: searchProductData.dateRange.start ?? new Date(0),
+            lte: searchProductData.dateRange.end ?? new Date(),
+          },
+        },
+      });
+    }
+
+    return await this.searchService.search(must, filter);
   }
 }

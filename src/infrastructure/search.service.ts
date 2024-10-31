@@ -56,21 +56,32 @@ export class SearchService {
     }
   }
 
-  async search(searchQuery: string): Promise<Product[]> {
+  async search(must: object[], filter: object[]): Promise<Product[]> {
     try {
       const response = await this.searchClient.search({
         index: "products",
         body: {
           query: {
-            match: {
-              name: searchQuery,
+            bool: {
+              must,
+              filter,
             },
           },
+          sort: [
+            { _score: { order: "desc" } },
+            { updatedAt: { order: "desc" } },
+          ],
         },
       });
-      return response.hits.hits.map((hit) => hit._source as Product);
+
+      return response.hits.hits.map((hit) => {
+        const product = hit._source as Product;
+        product.createdAt = new Date(product.createdAt);
+        product.updatedAt = new Date(product.updatedAt);
+        return product;
+      });
     } catch (error) {
-      this.logger.error(`Search failed: ${searchQuery}`, error);
+      this.logger.error(`Search failed: ${{ must, filter }}`, error);
       throw new Error(`Search failed: ${JSON.stringify(error)}`);
     }
   }

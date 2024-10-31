@@ -17,7 +17,7 @@ async function bootstrap() {
 
   await app.listen(port);
   let url = await app.getUrl();
-  url = url == `http://[::]:${port}` ? `http://localhost:${port}` : url;
+  url = url == `http://[::]:${port}` ? `http://127.0.0.1:${port}` : url;
   console.log(`Application is running on: ${url}/products`);
 }
 init();

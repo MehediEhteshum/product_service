@@ -1,7 +1,15 @@
-import { Field, InputType, Int, PartialType } from "@nestjs/graphql";
+import {
+  Field,
+  Float,
+  InputType,
+  Int,
+  ObjectType,
+  PartialType,
+} from "@nestjs/graphql";
 import {
   IsNotEmpty,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   Min,
@@ -42,3 +50,51 @@ export class CreateProductReq {
 
 @InputType("UpdateProductInput")
 export class UpdateProductReq extends PartialType(CreateProductReq) {}
+
+@ObjectType()
+@InputType()
+class DateRange {
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  start: Date;
+
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  end: Date;
+}
+
+@InputType("SearchProductInput")
+export class SearchProductReq {
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  query: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  category: string;
+
+  @Field(() => Float, { nullable: true })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  maxPrice: number;
+
+  @Field(() => Float, { nullable: true })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  minPrice: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  minStock: number;
+
+  @Field(() => DateRange, { nullable: true })
+  @IsOptional()
+  @IsObject()
+  dateRange: DateRange;
+}
