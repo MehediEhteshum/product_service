@@ -1,6 +1,6 @@
 import { UseGuards } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { AdminRoleGuard, AuthGuard } from "../core/index.ts";
+import { AdminGuard, AuthGuard, ReviewOwnerGuard } from "../core/index.ts";
 import { Review } from "../domain/index.ts";
 import { ReviewRepository } from "../infrastructure/index.ts";
 import { CreateReviewInput, UpdateReviewInput } from "./index.ts";
@@ -41,8 +41,9 @@ export class ReviewService {
     return await this.reviewRepository.create(reviewData);
   }
 
+  //@access private & RBAC
   @Mutation(() => Review, { name: "updateReview" })
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ReviewOwnerGuard)
   async update(
     @Args("id", { type: () => String }) id: string,
     @Args("updateReviewInput") updateReviewInput: UpdateReviewInput
@@ -60,16 +61,18 @@ export class ReviewService {
     return null;
   }
 
+  //@access private & RBAC
   @Mutation(() => Review, { name: "removeReview" })
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ReviewOwnerGuard)
   async remove(
     @Args("id", { type: () => String }) id: string
   ): Promise<Review | null> {
     return await this.reviewRepository.remove(id);
   }
 
+  //@access private
   @Mutation(() => Boolean)
-  @UseGuards(AuthGuard, AdminRoleGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   async deleteReviewsByProductId(
     @Args("productId", { type: () => String }) productId: string
   ): Promise<boolean> {

@@ -4,11 +4,13 @@ import {
   ForbiddenException,
   Injectable,
   Logger,
+  UnauthorizedException,
 } from "@nestjs/common";
+import { ReviewRepository } from "../../infrastructure/index.ts";
 
 @Injectable()
-export class AdminRoleGuard implements CanActivate {
-  private readonly logger = new Logger(AdminRoleGuard.name);
+export class AdminGuard implements CanActivate {
+  private readonly logger = new Logger(AdminGuard.name);
 
   canActivate(context: ExecutionContext): boolean {
     const gqlContext = context.getArgByIndex(2);
@@ -17,9 +19,54 @@ export class AdminRoleGuard implements CanActivate {
 
     if (user.role !== "admin") {
       this.logger.error("Access denied: Admins only");
-      throw new ForbiddenException("Access denied: Admins only");
+      throw new UnauthorizedException("Access denied: Admins only");
     }
 
     return true;
+  }
+}
+
+@Injectable()
+export abstract class OwnerGuard implements CanActivate {
+  protected readonly logger = new Logger(OwnerGuard.name);
+
+  abstract fetchResource(resourceProp: string): Promise<any>;
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const gqlContext = context.getArgByIndex(2);
+    const request = gqlContext?.req;
+    const userId = request?.user?.id;
+    const resourceProp = gqlContext.args?.id;
+
+    if (!userId || !resourceProp) {
+      this.logger.error("User ID or resource Prop is missing");
+      throw new ForbiddenException("Access denied: insufficient data");
+    }
+
+    const resource = await this.fetchResource(resourceProp);
+    if (!resource) {
+      this.logger.error(`Resource with Prop not found`);
+      throw new ForbiddenException("Access denied: resource not found");
+    }
+
+    if (resource.userId !== userId) {
+      this.logger.error("Access denied: user is not the resource owner");
+      throw new UnauthorizedException(
+        "Access denied: user is not the resource owner"
+      );
+    }
+
+    return true;
+  }
+}
+
+@Injectable()
+export class ReviewOwnerGuard extends OwnerGuard {
+  constructor(private readonly reviewRepository: ReviewRepository) {
+    super();
+  }
+
+  override async fetchResource(reviewId: string): Promise<any> {
+    return await this.reviewRepository.findOne(reviewId);
   }
 }

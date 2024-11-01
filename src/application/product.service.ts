@@ -1,6 +1,6 @@
 import { UseGuards } from "@nestjs/common";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { AdminRoleGuard, AuthGuard, TTL } from "../core/index.ts";
+import { AdminGuard, AuthGuard, TTL } from "../core/index.ts";
 import { Product } from "../domain/index.ts";
 import {
   CacheService,
@@ -65,7 +65,7 @@ export class ProductService {
 
   //@access private & RBAC
   @Mutation(() => Product)
-  @UseGuards(AuthGuard, AdminRoleGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   async create(
     @Args("createProductInput") createProductInput: CreateProductInput
   ): Promise<Product> {
@@ -90,7 +90,7 @@ export class ProductService {
 
   //@access private & RBAC
   @Mutation(() => Product, { nullable: true })
-  @UseGuards(AuthGuard, AdminRoleGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   async update(
     @Args("id", { type: () => ID }) id: string,
     @Args("updateProductInput") updateProductInput: UpdateProductInput
@@ -126,7 +126,7 @@ export class ProductService {
 
   //@access private & RBAC
   @Mutation(() => Product, { nullable: true })
-  @UseGuards(AuthGuard, AdminRoleGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   async remove(
     @Args("id", { type: () => ID }) id: string
   ): Promise<Product | null> {
