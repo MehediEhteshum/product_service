@@ -16,7 +16,7 @@ import {
 } from "class-validator";
 
 @InputType("CreateProductInput")
-export class CreateProductReq {
+export class CreateProductInput {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
@@ -49,7 +49,7 @@ export class CreateProductReq {
 }
 
 @InputType("UpdateProductInput")
-export class UpdateProductReq extends PartialType(CreateProductReq) {}
+export class UpdateProductInput extends PartialType(CreateProductInput) {}
 
 @ObjectType()
 @InputType()
@@ -64,7 +64,7 @@ class DateRange {
 }
 
 @InputType("SearchProductInput")
-export class SearchProductReq {
+export class SearchProductInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()

@@ -1,8 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { PrismaClient } from "../../node_modules/.prisma/client/index.js";
 import { Product } from "../domain/index.ts";
-
-const prisma = new PrismaClient();
+import { prisma } from "./index.ts";
 
 @Injectable()
 export class ProductRepository {

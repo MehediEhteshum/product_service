@@ -8,9 +8,9 @@ import {
   SearchService,
 } from "../infrastructure/index.ts";
 import {
-  CreateProductReq,
-  SearchProductReq,
-  UpdateProductReq,
+  CreateProductInput,
+  SearchProductInput,
+  UpdateProductInput,
 } from "./index.ts";
 
 @Resolver(() => Product)
@@ -67,13 +67,13 @@ export class ProductService {
   @Mutation(() => Product)
   @UseGuards(AuthGuard, AdminRoleGuard)
   async create(
-    @Args("createProductData") createProductData: CreateProductReq
+    @Args("createProductInput") createProductInput: CreateProductInput
   ): Promise<Product> {
     const productData: Omit<Product, "id"> = {
-      ...createProductData,
-      description: createProductData.description ?? "",
-      imageUrl: createProductData.imageUrl ?? "",
-      category: createProductData.category ?? "",
+      ...createProductInput,
+      description: createProductInput.description ?? "",
+      imageUrl: createProductInput.imageUrl ?? "",
+      category: createProductInput.category ?? "",
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -93,20 +93,19 @@ export class ProductService {
   @UseGuards(AuthGuard, AdminRoleGuard)
   async update(
     @Args("id", { type: () => ID }) id: string,
-    @Args("updateProductData") updateProductData: UpdateProductReq
+    @Args("updateProductInput") updateProductInput: UpdateProductInput
   ): Promise<Product | null> {
     const existingProduct = await this.findOne(id);
     if (existingProduct) {
       const updatedData: Product = {
-        id: existingProduct.id,
-        name: updateProductData.name ?? existingProduct.name,
+        ...existingProduct,
+        name: updateProductInput.name ?? existingProduct.name,
         description:
-          updateProductData.description ?? existingProduct.description,
-        imageUrl: updateProductData.imageUrl ?? existingProduct.imageUrl,
-        category: updateProductData.category ?? existingProduct.category,
-        price: updateProductData.price ?? existingProduct.price,
-        stock: updateProductData.stock ?? existingProduct.stock,
-        createdAt: existingProduct.createdAt,
+          updateProductInput.description ?? existingProduct.description,
+        imageUrl: updateProductInput.imageUrl ?? existingProduct.imageUrl,
+        category: updateProductInput.category ?? existingProduct.category,
+        price: updateProductInput.price ?? existingProduct.price,
+        stock: updateProductInput.stock ?? existingProduct.stock,
         updatedAt: new Date(),
       };
       const updatedProduct = await this.productRepository.update(
@@ -142,25 +141,25 @@ export class ProductService {
   //@access public
   @Query(() => [Product])
   async search(
-    @Args("searchProductData") searchProductData: SearchProductReq
+    @Args("searchProductInput") searchProductInput: SearchProductInput
   ): Promise<Product[]> {
     let must: object[] = [];
     let filter: object[] = [];
 
-    if (searchProductData.query) {
+    if (searchProductInput.query) {
       must.push({
         bool: {
           should: [
             {
               match: {
                 name: {
-                  query: searchProductData.query,
+                  query: searchProductInput.query,
                 },
               },
             },
             {
               match: {
-                description: searchProductData.query,
+                description: searchProductInput.query,
               },
             },
           ],
@@ -169,41 +168,41 @@ export class ProductService {
       });
     }
 
-    if (searchProductData.category) {
+    if (searchProductInput.category) {
       filter.push({
         match: {
-          category: searchProductData.category,
+          category: searchProductInput.category,
         },
       });
     }
 
-    if (searchProductData.minPrice || searchProductData.maxPrice) {
+    if (searchProductInput.minPrice || searchProductInput.maxPrice) {
       filter.push({
         range: {
           price: {
-            gte: searchProductData.minPrice ?? 0,
-            lte: searchProductData.maxPrice ?? Infinity,
+            gte: searchProductInput.minPrice ?? 0,
+            lte: searchProductInput.maxPrice ?? Infinity,
           },
         },
       });
     }
 
-    if (searchProductData.minStock) {
+    if (searchProductInput.minStock) {
       filter.push({
         range: {
           stock: {
-            gte: searchProductData.minStock,
+            gte: searchProductInput.minStock,
           },
         },
       });
     }
 
-    if (searchProductData.dateRange) {
+    if (searchProductInput.dateRange) {
       filter.push({
         range: {
           updatedAt: {
-            gte: searchProductData.dateRange.start ?? new Date(0),
-            lte: searchProductData.dateRange.end ?? new Date(),
+            gte: searchProductInput.dateRange.start ?? new Date(0),
+            lte: searchProductInput.dateRange.end ?? new Date(),
           },
         },
       });
