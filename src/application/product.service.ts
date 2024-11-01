@@ -154,6 +154,7 @@ export class ProductService {
               match: {
                 name: {
                   query: searchProductInput.query,
+                  analyzer: "autocomplete",
                 },
               },
             },

@@ -1,5 +1,12 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import {
+  Args,
+  Context,
+  GqlExecutionContext,
+  Mutation,
+  Query,
+  Resolver,
+} from "@nestjs/graphql";
 import { AdminGuard, AuthGuard, ReviewOwnerGuard } from "../core/index.ts";
 import { Review } from "../domain/index.ts";
 import { ReviewRepository } from "../infrastructure/index.ts";
@@ -30,11 +37,13 @@ export class ReviewService {
   @Mutation(() => Review)
   @UseGuards(AuthGuard)
   async createReview(
-    @Args("createReviewInput") createReviewInput: CreateReviewInput
+    @Args("createReviewInput") createReviewInput: CreateReviewInput,
+    @Context() context: GqlExecutionContext
   ): Promise<Review> {
     const reviewData: Omit<Review, "id"> = {
       ...createReviewInput,
       comment: createReviewInput.comment ?? "",
+      userId: context.getArgByIndex(2).req.user.id,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

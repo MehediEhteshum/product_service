@@ -26,11 +26,6 @@ export class CreateReviewInput {
   @IsNotEmpty()
   @IsString()
   productId: string;
-
-  @Field()
-  @IsNotEmpty()
-  @IsString()
-  userId: string;
 }
 
 @InputType("UpdateReviewInput")
