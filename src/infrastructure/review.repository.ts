@@ -6,14 +6,14 @@ import { prisma } from "./index.ts";
 export class ReviewRepository {
   private readonly logger = new Logger(ReviewRepository.name);
 
-  async create(review: Omit<Review, "id">): Promise<Review> {
+  async findOne(id: string): Promise<Review | null> {
     try {
-      const createdReview = await prisma.review.create({ data: review });
-      this.logger.log(`Review created successfully`);
-      return createdReview;
+      const review = await prisma.review.findUnique({ where: { id } });
+      this.logger.log(`Review with id retrieved successfully`);
+      return review;
     } catch (error) {
-      this.logger.error(`Failed to create review`, error);
-      throw new Error(`Failed to create review: ${error.message}`);
+      this.logger.error(`Failed to retrieve review with id`, error);
+      throw new Error(`Failed to retrieve review: ${error.message}`);
     }
   }
 
@@ -28,24 +28,30 @@ export class ReviewRepository {
     }
   }
 
-  async deleteByProductId(productId: string): Promise<void> {
+  async findByUserIdAndProductId(
+    userId: string,
+    productId: string
+  ): Promise<Review | null> {
     try {
-      await prisma.review.deleteMany({ where: { productId } });
-      this.logger.log(`Reviews deleted successfully`);
+      const review = await prisma.review.findFirst({
+        where: { userId, productId },
+      });
+      this.logger.log(`Review retrieved successfully`);
+      return review;
     } catch (error) {
-      this.logger.error(`Failed to delete reviews`, error);
-      throw new Error(`Failed to delete reviews: ${error.message}`);
+      this.logger.error(`Failed to retrieve review`, error);
+      throw new Error(`Failed to retrieve review: ${error.message}`);
     }
   }
 
-  async findOne(id: string): Promise<Review | null> {
+  async create(review: Omit<Review, "id">): Promise<Review> {
     try {
-      const review = await prisma.review.findUnique({ where: { id } });
-      this.logger.log(`Review with id retrieved successfully`);
-      return review;
+      const createdReview = await prisma.review.create({ data: review });
+      this.logger.log(`Review created successfully`);
+      return createdReview;
     } catch (error) {
-      this.logger.error(`Failed to retrieve review with id`, error);
-      throw new Error(`Failed to retrieve review: ${error.message}`);
+      this.logger.error(`Failed to create review`, error);
+      throw new Error(`Failed to create review: ${error.message}`);
     }
   }
 
@@ -60,6 +66,16 @@ export class ReviewRepository {
     } catch (error) {
       this.logger.error(`Failed to update review with id`, error);
       throw new Error(`Failed to update review: ${error.message}`);
+    }
+  }
+
+  async deleteByProductId(productId: string): Promise<void> {
+    try {
+      await prisma.review.deleteMany({ where: { productId } });
+      this.logger.log(`Reviews deleted successfully`);
+    } catch (error) {
+      this.logger.error(`Failed to delete reviews`, error);
+      throw new Error(`Failed to delete reviews: ${error.message}`);
     }
   }
 

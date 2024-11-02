@@ -1,5 +1,5 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { AdminGuard, AuthGuard, TTL } from "../core/index.ts";
 import { Product } from "../domain/index.ts";
 import {
@@ -41,7 +41,7 @@ export class ProductService {
   //@access public
   @Query(() => Product, { nullable: true, name: "product" })
   async findOne(
-    @Args("id", { type: () => ID }) id: string
+    @Args("id", { type: () => String }) id: string
   ): Promise<Product | null> {
     const cachedProduct = await this.cacheStore.get(id);
     let foundProduct: Product | null;
@@ -92,7 +92,7 @@ export class ProductService {
   @Mutation(() => Product, { nullable: true, name: "updateProduct" })
   @UseGuards(AuthGuard, AdminGuard)
   async update(
-    @Args("id", { type: () => ID }) id: string,
+    @Args("id", { type: () => String }) id: string,
     @Args("updateProductInput") updateProductInput: UpdateProductInput
   ): Promise<Product | null> {
     const existingProduct = await this.findOne(id);
@@ -128,7 +128,7 @@ export class ProductService {
   @Mutation(() => Product, { nullable: true, name: "removeProduct" })
   @UseGuards(AuthGuard, AdminGuard)
   async remove(
-    @Args("id", { type: () => ID }) id: string
+    @Args("id", { type: () => String }) id: string
   ): Promise<Product | null> {
     const deletedProduct = await this.productRepository.remove(id);
     if (deletedProduct) {

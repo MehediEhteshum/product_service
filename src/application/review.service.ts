@@ -33,10 +33,18 @@ export class ReviewService {
     @Args("createReviewInput") createReviewInput: CreateReviewInput,
     @Context() context: any
   ): Promise<Review> {
+    const userId = context.req.user.id;
+    const existingReview = await this.reviewRepository.findByUserIdAndProductId(
+      userId,
+      createReviewInput.productId
+    );
+    if (existingReview) {
+      throw new Error("You have already reviewed this product");
+    }
     const reviewData: Omit<Review, "id"> = {
       ...createReviewInput,
       comment: createReviewInput.comment ?? "",
-      userId: context.req.user.id,
+      userId: userId,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
