@@ -13,8 +13,7 @@ export class AdminGuard implements CanActivate {
   private readonly logger = new Logger(AdminGuard.name);
 
   canActivate(context: ExecutionContext): boolean {
-    const gqlContext = context.getArgByIndex(2);
-    const request = gqlContext?.req;
+    const request = context.getArgByIndex(2)?.req;
     const user = request?.user ?? {};
 
     if (user.role !== "admin") {
@@ -33,10 +32,9 @@ export abstract class OwnerGuard implements CanActivate {
   abstract fetchResource(resourceProp: string): Promise<any>;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const gqlContext = context.getArgByIndex(2);
-    const request = gqlContext?.req;
+    const request = context.getArgByIndex(2)?.req;
     const userId = request?.user?.id;
-    const resourceProp = gqlContext.args?.id;
+    const resourceProp = context.getArgByIndex(1)?.id;
 
     if (!userId || !resourceProp) {
       this.logger.error("User ID or resource Prop is missing");

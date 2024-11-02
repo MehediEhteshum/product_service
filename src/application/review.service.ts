@@ -1,12 +1,5 @@
 import { UseGuards } from "@nestjs/common";
-import {
-  Args,
-  Context,
-  GqlExecutionContext,
-  Mutation,
-  Query,
-  Resolver,
-} from "@nestjs/graphql";
+import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { AdminGuard, AuthGuard, ReviewOwnerGuard } from "../core/index.ts";
 import { Review } from "../domain/index.ts";
 import { ReviewRepository } from "../infrastructure/index.ts";
@@ -17,7 +10,7 @@ export class ReviewService {
   constructor(private readonly reviewRepository: ReviewRepository) {}
 
   //@access public
-  @Query(() => [Review], { name: "reviewsByProductId" })
+  @Query(() => [Review], { name: "productReviews" })
   async findReviewsByProductId(
     @Args("productId", { type: () => String }) productId: string
   ): Promise<Review[]> {
@@ -34,16 +27,16 @@ export class ReviewService {
   }
 
   //@access private
-  @Mutation(() => Review)
+  @Mutation(() => Review, { name: "createReview" })
   @UseGuards(AuthGuard)
-  async createReview(
+  async create(
     @Args("createReviewInput") createReviewInput: CreateReviewInput,
-    @Context() context: GqlExecutionContext
+    @Context() context: any
   ): Promise<Review> {
     const reviewData: Omit<Review, "id"> = {
       ...createReviewInput,
       comment: createReviewInput.comment ?? "",
-      userId: context.getArgByIndex(2).req.user.id,
+      userId: context.req.user.id,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -80,7 +73,7 @@ export class ReviewService {
   }
 
   //@access private
-  @Mutation(() => Boolean)
+  @Mutation(() => Boolean, { name: "removeProductReviews" })
   @UseGuards(AuthGuard, AdminGuard)
   async deleteReviewsByProductId(
     @Args("productId", { type: () => String }) productId: string

@@ -28,7 +28,7 @@ export class ProductService {
   }
 
   //@access public
-  @Query(() => [Product])
+  @Query(() => [Product], { name: "products" })
   async findAll(): Promise<Product[]> {
     // ideally, it must have limit and offset
     // plus redis support
@@ -39,7 +39,7 @@ export class ProductService {
   }
 
   //@access public
-  @Query(() => Product, { nullable: true })
+  @Query(() => Product, { nullable: true, name: "product" })
   async findOne(
     @Args("id", { type: () => ID }) id: string
   ): Promise<Product | null> {
@@ -64,7 +64,7 @@ export class ProductService {
   }
 
   //@access private & RBAC
-  @Mutation(() => Product)
+  @Mutation(() => Product, { name: "createProduct" })
   @UseGuards(AuthGuard, AdminGuard)
   async create(
     @Args("createProductInput") createProductInput: CreateProductInput
@@ -89,7 +89,7 @@ export class ProductService {
   }
 
   //@access private & RBAC
-  @Mutation(() => Product, { nullable: true })
+  @Mutation(() => Product, { nullable: true, name: "updateProduct" })
   @UseGuards(AuthGuard, AdminGuard)
   async update(
     @Args("id", { type: () => ID }) id: string,
@@ -125,7 +125,7 @@ export class ProductService {
   }
 
   //@access private & RBAC
-  @Mutation(() => Product, { nullable: true })
+  @Mutation(() => Product, { nullable: true, name: "removeProduct" })
   @UseGuards(AuthGuard, AdminGuard)
   async remove(
     @Args("id", { type: () => ID }) id: string
@@ -139,7 +139,7 @@ export class ProductService {
   }
 
   //@access public
-  @Query(() => [Product])
+  @Query(() => [Product], { name: "searchProducts" })
   async search(
     @Args("searchProductInput") searchProductInput: SearchProductInput
   ): Promise<Product[]> {
