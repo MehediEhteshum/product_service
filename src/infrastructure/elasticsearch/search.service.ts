@@ -1,7 +1,7 @@
 import { Client } from "@elastic/elasticsearch";
 import { Injectable, Logger } from "@nestjs/common";
-import { CUSTOM_INDEX_SETTING } from "../core/index.ts";
-import { Product } from "../domain/index.ts";
+import { CUSTOM_INDEX_SETTING } from "../../core/index.ts";
+import { Product } from "../../domain/index.ts";
 
 @Injectable()
 export class SearchService {

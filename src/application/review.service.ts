@@ -2,12 +2,18 @@ import { UseGuards } from "@nestjs/common";
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { AdminGuard, AuthGuard, ReviewOwnerGuard } from "../core/index.ts";
 import { Review } from "../domain/index.ts";
-import { ReviewRepository } from "../infrastructure/index.ts";
+import {
+  ReviewEventProducerService,
+  ReviewRepository,
+} from "../infrastructure/index.ts";
 import { CreateReviewInput, UpdateReviewInput } from "./index.ts";
 
 @Resolver(() => Review)
 export class ReviewService {
-  constructor(private readonly reviewRepository: ReviewRepository) {}
+  constructor(
+    private readonly reviewRepository: ReviewRepository,
+    private readonly reviewEventProducer: ReviewEventProducerService
+  ) {}
 
   //@access public
   @Query(() => [Review], { name: "productReviews" })
@@ -48,7 +54,11 @@ export class ReviewService {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    return await this.reviewRepository.create(reviewData);
+    const review = await this.reviewRepository.create(reviewData);
+    if (review.rating < 4) {
+      await this.reviewEventProducer.produceReviewEvent(review);
+    }
+    return review;
   }
 
   //@access private & RBAC
@@ -66,7 +76,11 @@ export class ReviewService {
         comment: updateReviewInput.comment ?? existingReview.comment,
         updatedAt: new Date(),
       };
-      return await this.reviewRepository.update(id, updatedData);
+      const updatedReview = await this.reviewRepository.update(id, updatedData);
+      if (updatedReview!.rating < 4) {
+        await this.reviewEventProducer.produceReviewEvent(updatedReview!);
+      }
+      return updatedReview;
     }
     return null;
   }

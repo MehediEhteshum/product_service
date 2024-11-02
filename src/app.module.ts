@@ -5,6 +5,7 @@ import { ProductService, ReviewService } from "./application/index.ts";
 import {
   CacheService,
   ProductRepository,
+  ReviewEventProducerService,
   ReviewRepository,
   SearchService,
 } from "./infrastructure/index.ts";
@@ -27,6 +28,7 @@ import {
     ReviewService,
     CacheService,
     SearchService,
+    ReviewEventProducerService,
   ],
 })
 export class AppModule {}

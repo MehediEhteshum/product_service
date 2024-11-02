@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Redis } from "ioredis";
-import { TTL } from "../core/index.ts";
+import { TTL } from "../../core/index.ts";
 
 @Injectable()
 export class CacheService {
