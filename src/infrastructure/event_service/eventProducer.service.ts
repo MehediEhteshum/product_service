@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { Kafka, Partitioners, Producer } from "kafkajs";
+import { Admin, Kafka, Partitioners, Producer } from "kafkajs";
 import { Event, EventType } from "../../domain/index.ts";
 
 interface EventData {
@@ -13,7 +13,9 @@ interface EventData {
 export class EventProducerService {
   private readonly kafka: Kafka;
   private readonly producer: Producer;
+  private readonly admin: Admin;
   private readonly logger: Logger = new Logger(EventProducerService.name);
+  private readonly globalRetentionMs = 3 * 24 * 60 * 60 * 1000;
 
   constructor() {
     this.kafka = new Kafka({
@@ -23,6 +25,7 @@ export class EventProducerService {
     this.producer = this.kafka.producer({
       createPartitioner: Partitioners.DefaultPartitioner,
     });
+    this.admin = this.kafka.admin();
     this.connect();
   }
 
@@ -36,6 +39,36 @@ export class EventProducerService {
     }
   }
 
+  private async createTopic(
+    topic: string,
+    retentionMs: number = this.globalRetentionMs
+  ) {
+    await this.admin.connect();
+    const topics = await this.admin.listTopics();
+
+    if (!topics.includes(topic)) {
+      await this.admin.createTopics({
+        topics: [
+          {
+            topic: topic,
+            numPartitions: 1,
+            replicationFactor: 1,
+            configEntries: [
+              {
+                name: "retention.ms",
+                value: retentionMs.toString(),
+              },
+            ],
+          },
+        ],
+      });
+      this.logger.log(
+        `Created topic with a retention policy of ${retentionMs}ms`
+      );
+    }
+    await this.admin.disconnect();
+  }
+
   async produceEvent(event: Event): Promise<void> {
     const eventData: EventData = {
       eventId: event.id,
@@ -43,7 +76,10 @@ export class EventProducerService {
       data: event.data,
       tag: event.tag,
     };
+
     try {
+      await this.createTopic(event.topic);
+
       await this.producer.send({
         topic: event.topic,
         messages: [{ value: JSON.stringify(eventData) }],
