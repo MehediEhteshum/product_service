@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { Kafka, Producer } from "kafkajs";
+import { Kafka, Partitioners, Producer } from "kafkajs";
 import { Event, EventType } from "../../domain/index.ts";
 
 interface EventData {
@@ -17,10 +17,12 @@ export class EventProducerService {
 
   constructor() {
     this.kafka = new Kafka({
-      brokers: ["localhost:9092"],
-      clientId: "product-service",
+      brokers: [process.env.EVENT_BROKER_URL || "localhost:9092"],
+      clientId: process.env.EVENT_BROKER_CLIENT_ID || "product-service",
     });
-    this.producer = this.kafka.producer();
+    this.producer = this.kafka.producer({
+      createPartitioner: Partitioners.DefaultPartitioner,
+    });
     this.connect();
   }
 
