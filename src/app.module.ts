@@ -4,8 +4,8 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { ProductService, ReviewService } from "./application/index.ts";
 import {
   CacheService,
+  EventProducerService,
   ProductRepository,
-  ReviewEventProducerService,
   ReviewRepository,
   SearchService,
 } from "./infrastructure/index.ts";
@@ -28,7 +28,7 @@ import {
     ReviewService,
     CacheService,
     SearchService,
-    ReviewEventProducerService,
+    EventProducerService,
   ],
 })
 export class AppModule {}
