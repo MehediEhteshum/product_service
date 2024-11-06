@@ -92,6 +92,7 @@ export class EventProducerService {
   }
 
   async disconnect() {
+    // A potential use case would be to gracefully disconnect the producer during application shutdown to prevent resource leaks and ensure that any in-flight messages are handled appropriately.  This would typically be done in a shutdown hook or a dedicated method called during application termination.
     await this.producer.disconnect();
     this.logger.log("Event producer disconnected");
   }
