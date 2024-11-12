@@ -1,3 +1,5 @@
+# .env in the same directory as docker-compose.yml
+
 services:
   # Elasticsearch service
   elasticsearch:
@@ -8,29 +10,19 @@ services:
       - xpack.security.enabled=false
       # - ES_JAVA_OPTS=-Xmx896m -Xms768m  # Limit Elasticsearch memory usage
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "${ES_DOCKER_PORT_MAP1}"   # Port mapping for Elasticsearch
+      - "${ES_DOCKER_PORT_MAP2}"   # Transport port for Elasticsearch
     volumes:
       - es-data:/usr/share/elasticsearch/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # Redis service
   redis:
     image: redis:alpine
     container_name: redis
     ports:
-      - "6379:6379"
+      - "${REDIS_DOCKER_PORT_MAP}"  # Port mapping for Redis
     volumes:
       - redis-data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # Zookeeper for Kafka
   zookeeper:
@@ -39,7 +31,7 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     ports:
-      - "2181:2181"
+      - "${ZOOKEEPER_DOCKER_PORT_MAP}"  # Port mapping for Zookeeper
     volumes:
       - zookeeper-data:/bitnami/zookeeper
 
@@ -49,22 +41,17 @@ services:
     container_name: kafka
     environment:
       - KAFKA_BROKER_ID=1
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:${ZOOKEEPER_DOCKER_INTERNAL_PORT}   # Internal port for Zookeeper
+      - KAFKA_ADVERTISED_LISTENERS=${KAFKA_URL_DOCKER}  # Kafka URL
       - KAFKA_DELETE_TOPIC_ENABLE=true
       - ALLOW_PLAINTEXT_LISTENER=yes
       # - KAFKA_HEAP_OPTS=-Xmx896m -Xms768m  # Limit Kafka Java heap size
     ports:
-      - "9092:9092"
+      - "${KAFKA_DOCKER_PORT_MAP}"  # Port mapping for Kafka
     volumes:
       - kafka-data:/bitnami/kafka
     depends_on:
       - zookeeper
-    healthcheck:
-      test: ["CMD", "kafka-topics.sh", "--bootstrap-server", "localhost:9092", "--list"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     # deploy:
     #   resources:
     #     limits:

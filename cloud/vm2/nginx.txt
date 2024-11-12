@@ -1,0 +1,48 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    # Define the token securely (use env or external file if needed)
+    set $auth_token "${SERVER_API_KEY}";
+
+    # Event_broker proxy with token-based access control
+    location /event-broker {
+        if ($http_service_access_token != $auth_token) {
+            return 403;
+        }
+        proxy_pass ${EVENT_BROKER_URL};
+        proxy_set_header Host $host;
+    }
+
+    # Search_broker proxy with token-based access control
+    location /search-broker {
+        if ($http_service_access_token != $auth_token) {
+            return 403;
+        }
+        proxy_pass ${SEARCH_BROKER_URL};
+        proxy_set_header Host $host;
+    }
+
+    # Cache_broker proxy with token-based access control
+    location /cache-broker {
+        if ($http_service_access_token != $auth_token) {
+            return 403;
+        }
+        proxy_pass ${CACHE_BROKER_URL};
+        proxy_set_header Host $host;
+    }
+
+    # Event_broker_manager proxy with token-based access control (if needed)
+    location /event-broker-manager {
+        if ($http_service_access_token != $auth_token) {
+            return 403;
+        }
+        proxy_pass ${EVENT_BROKER_MANAGER_URL};
+        proxy_set_header Host $host;
+    }
+
+    # Additional catch-all location block for unhandled requests
+    location / {
+        return 404;
+    }
+}
