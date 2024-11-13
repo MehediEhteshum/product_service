@@ -25,7 +25,7 @@ export class ReviewService {
   }
 
   //@access public
-  @Query(() => Review, { name: "review" })
+  @Query(() => Review, { nullable: true, name: "review" })
   async findOne(
     @Args("id", { type: () => String }) id: string
   ): Promise<Review | null> {

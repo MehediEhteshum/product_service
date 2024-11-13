@@ -1,0 +1,55 @@
+# File: /etc/nginx/sites-available/default
+server {
+    listen 80;
+    server_name vm1;
+
+    # Include the API key
+    include /etc/nginx/api_keys.conf;
+
+    # Common security headers
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+
+    # Elasticsearch request forwarding
+    location /elasticsearch/ {
+        # Validate SERVER_API_KEY from the request header
+        if ($http_x_server_api_key != $server_api_key) {
+            return 403 "Invalid API key";
+        }
+
+        proxy_pass http://elasticsearch_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Timeout settings
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+
+    # Kafka request forwarding
+    location /kafka/ {
+        # Validate SERVER_API_KEY from the request header
+        if ($http_x_server_api_key != $server_api_key) {
+            return 403 "Invalid API key";
+        }
+
+        proxy_pass http://kafka_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Timeout settings
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+}
