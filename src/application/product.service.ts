@@ -33,6 +33,11 @@ export class ProductService {
     // ideally, it must have limit and offset
     // plus redis support
     const products = await this.productRepository.findAll();
+    if (products.length > 0) {
+      for (const product of products) {
+        await this.searchService.index("products", product);
+      }
+    }
     return products.sort(
       (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()
     );
@@ -60,6 +65,7 @@ export class ProductService {
         );
       }
     }
+    foundProduct && (await this.searchService.index("products", foundProduct));
     return foundProduct;
   }
 

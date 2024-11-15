@@ -1,0 +1,22 @@
+# .env in the same directory as docker-compose.yml
+
+version: "3"
+
+services:
+  nginx-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nginx-proxy
+    ports:
+      - "${PORT_MAP_NGINX_ES}"
+      - "${PORT_MAP_NGINX_KAFKA}"
+      - "${PORT_MAP_NGINX_REDIS}"
+    environment:
+      - ES_UPSTREAM=${ES_UPSTREAM}
+      - KAFKA_UPSTREAM=${KAFKA_UPSTREAM}
+      - REDIS_UPSTREAM=${REDIS_UPSTREAM}
+      - ES_PORT=${ES_PORT}
+      - KAFKA_PORT=${KAFKA_PORT}
+      - REDIS_PORT=${REDIS_PORT}
+    restart: unless-stopped
