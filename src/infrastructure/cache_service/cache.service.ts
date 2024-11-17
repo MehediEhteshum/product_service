@@ -10,7 +10,7 @@ export class CacheService {
   constructor() {
     this.redis = new Redis({
       host: process.env.REDIS_HOST,
-      port: parseInt(process.env.REDIS_PORT!, 10) || 6379,
+      port: parseInt(process.env.REDIS_PORT_APP!, 10) || 6379,
     });
   }
 
