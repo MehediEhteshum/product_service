@@ -12,11 +12,17 @@ services:
       - "${PORT_MAP_NGINX_ES}"
       - "${PORT_MAP_NGINX_KAFKA}"
       - "${PORT_MAP_NGINX_REDIS}"
+      - "${PORT_MAP_NGINX_DB}"
+      - "${PORT_MAP_NGINX_DB_DIRECT}"
     environment:
       - ES_UPSTREAM=${ES_UPSTREAM}
       - KAFKA_UPSTREAM=${KAFKA_UPSTREAM}
       - REDIS_UPSTREAM=${REDIS_UPSTREAM}
+      - DB_UPSTREAM=${DB_UPSTREAM}
+      - DB_DIRECT_UPSTREAM=${DB_DIRECT_UPSTREAM}
       - ES_PORT=${ES_PORT}
       - KAFKA_PORT=${KAFKA_PORT}
       - REDIS_PORT=${REDIS_PORT}
+      - DB_PORT=${DB_PORT}
+      - DB_DIRECT_PORT=${DB_DIRECT_PORT}
     restart: unless-stopped
