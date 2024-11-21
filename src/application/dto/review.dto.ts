@@ -15,17 +15,17 @@ export class CreateReviewInput {
   @IsNumber()
   @Min(1)
   @Max(5)
-  rating: number;
+  rating!: number;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  comment: string;
+  comment!: string;
 
   @Field()
   @IsNotEmpty()
   @IsString()
-  productId: string;
+  productId!: string;
 }
 
 @InputType("UpdateReviewInput")

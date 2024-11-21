@@ -1,5 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Redis } from "ioredis";
+import process from "node:process";
 import { TTL } from "../../core/index.ts";
 
 @Injectable()

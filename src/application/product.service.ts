@@ -149,8 +149,8 @@ export class ProductService {
   async search(
     @Args("searchProductInput") searchProductInput: SearchProductInput
   ): Promise<Product[]> {
-    let must: object[] = [];
-    let filter: object[] = [];
+    const must: object[] = [];
+    const filter: object[] = [];
 
     if (searchProductInput.query) {
       must.push({

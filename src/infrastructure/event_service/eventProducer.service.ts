@@ -1,11 +1,12 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Admin, Kafka, Partitioners, Producer } from "kafkajs";
+import process from "node:process";
 import { Event, EventType } from "../../domain/index.ts";
 
 interface EventData {
   eventId: string;
   eventType: EventType;
-  data: Record<string, any>;
+  data: Record<string, object>;
   tag: string;
 }
 
@@ -35,7 +36,9 @@ export class EventProducerService {
       this.logger.log("Event producer connected successfully");
     } catch (error) {
       this.logger.error("Failed to connect to Event producer", error);
-      throw new Error(`Failed to connect to Event producer: ${error.message}`);
+      throw new Error(
+        `Failed to connect to Event producer: ${(error as Error).message}`
+      );
     }
   }
 
@@ -87,7 +90,7 @@ export class EventProducerService {
       this.logger.log(`Event produced successfully: ${event.type}`);
     } catch (error) {
       this.logger.error("Failed to produce event", error);
-      throw new Error(`Failed to produce event: ${error.message}`);
+      throw new Error(`Failed to produce event: ${(error as Error).message}`);
     }
   }
 
