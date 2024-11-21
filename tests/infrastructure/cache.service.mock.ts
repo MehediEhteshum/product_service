@@ -1,14 +1,14 @@
 export class MockCacheService {
-  get(key: string): Promise<string | null> {
+  get(_key: string): Promise<string | null> {
     return Promise.resolve(null);
   }
-  set(key: string, value: string): Promise<void> {
+  set(_key: string, _value: string): Promise<void> {
     return Promise.resolve();
   }
-  extendTTL(key: string, ttl: number): Promise<void> {
+  extendTTL(_key: string, _ttl: number): Promise<void> {
     return Promise.resolve();
   }
-  del(key: string): Promise<void> {
+  del(_key: string): Promise<void> {
     return Promise.resolve();
   }
 }

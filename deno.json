@@ -1,5 +1,6 @@
 {
   "tasks": {
+    "test": "deno test --allow-sys --allow-env --allow-read --allow-ffi",
     "install": "deno install --allow-scripts",
     "prisma": "npx prisma generate",
     "start": "deno run --watch --allow-read --allow-env --allow-net --allow-sys --allow-ffi ./src/main.ts",

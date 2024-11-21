@@ -1,14 +1,16 @@
+import type { Product } from "../../src/domain/index.ts";
+
 export class MockSearchService {
-  createCustomIndex(index: string): Promise<void> {
+  createCustomIndex(_index: string): Promise<void> {
     return Promise.resolve();
   }
-  index(index: string, product: any): Promise<void> {
+  index(_index: string, _product: Product): Promise<void> {
     return Promise.resolve();
   }
-  search(must: any, filter: any): Promise<any[]> {
+  search(_must: object[], _filter: object[]): Promise<Product[]> {
     return Promise.resolve([]);
   }
-  delete(index: string, id: string): Promise<void> {
+  delete(_index: string, _id: string): Promise<void> {
     return Promise.resolve();
   }
 }
