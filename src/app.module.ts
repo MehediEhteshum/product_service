@@ -22,10 +22,10 @@ import {
     })
   ],
   providers: [
-    ProductRepository,
-    ReviewRepository,
     ProductResolver,
     ReviewResolver,
+    ProductRepository,
+    ReviewRepository,
     CacheService,
     SearchService,
     EventProducerService

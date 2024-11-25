@@ -1,6 +1,5 @@
 import { Client } from "@elastic/elasticsearch";
 import { Injectable, Logger } from "@nestjs/common";
-import process from "node:process";
 import { CUSTOM_INDEX_SETTING } from "../../core/index";
 import { Product } from "../../domain/index";
 

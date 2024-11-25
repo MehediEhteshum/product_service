@@ -1,10 +1,11 @@
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { init } from "./core/index";
 import { AppModule } from "./index";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = process.env.PORT ?? 3000;
 
   app.useGlobalPipes(

@@ -6,7 +6,6 @@ import {
   UnauthorizedException
 } from "@nestjs/common";
 import jwt from "jsonwebtoken";
-import process from "node:process";
 
 @Injectable()
 export class AuthGuard implements CanActivate {

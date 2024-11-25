@@ -1,6 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Admin, Kafka, Partitioners, Producer } from "kafkajs";
-import process from "node:process";
 import { Event, EventType } from "../../domain/index";
 
 interface EventData {
