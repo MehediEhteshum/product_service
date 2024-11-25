@@ -4,7 +4,7 @@ import {
   InputType,
   Int,
   ObjectType,
-  PartialType,
+  PartialType
 } from "@nestjs/graphql";
 import {
   IsNotEmpty,
@@ -12,7 +12,7 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  Min,
+  Min
 } from "class-validator";
 
 @InputType("CreateProductInput")

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Redis } from "ioredis";
 import process from "node:process";
-import { TTL } from "../../core/index.ts";
+import { TTL } from "../../core/index";
 
 @Injectable()
 export class CacheService {
@@ -11,7 +11,7 @@ export class CacheService {
   constructor() {
     this.redis = new Redis({
       host: process.env.REDIS_HOST,
-      port: parseInt(process.env.REDIS_PORT_APP!, 10) || 6379,
+      port: parseInt(process.env.REDIS_PORT_APP!, 10) || 6379
     });
   }
 

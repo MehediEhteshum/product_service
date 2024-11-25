@@ -1,5 +1,5 @@
 import { Logger } from "@nestjs/common";
-import { Product } from "../../src/domain/index.ts";
+import { Product } from "../../src/domain/index";
 
 export class MockProductRepository {
   private readonly logger = new Logger(MockProductRepository.name);
@@ -15,7 +15,7 @@ export class MockProductRepository {
         description: "A great product",
         imageUrl: "url1",
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id: "2",
@@ -26,8 +26,8 @@ export class MockProductRepository {
         description: "Another great product",
         imageUrl: "url2",
         createdAt: new Date(),
-        updatedAt: new Date(),
-      },
+        updatedAt: new Date()
+      }
     ]);
   }
   findOne(id: string): Promise<Product | null> {
@@ -40,7 +40,7 @@ export class MockProductRepository {
       description: "A great product",
       imageUrl: "url1",
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     });
   }
   create(productData: any): Promise<Product> {
@@ -48,7 +48,7 @@ export class MockProductRepository {
       id: "3",
       ...productData,
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     });
   }
   update(id: string, updatedData: any): Promise<Product> {
@@ -64,7 +64,7 @@ export class MockProductRepository {
       description: "A great product",
       imageUrl: "url1",
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     });
   }
 }

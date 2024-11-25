@@ -1,15 +1,15 @@
 import { UseGuards } from "@nestjs/common";
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { AdminGuard, AuthGuard, ReviewOwnerGuard } from "../core/index.ts";
-import { Event, EventType, Review } from "../domain/index.ts";
+import { AdminGuard, AuthGuard, ReviewOwnerGuard } from "../core/index";
+import { Event, EventType, Review } from "../domain/index";
 import {
   EventProducerService,
-  ReviewRepository,
-} from "../infrastructure/index.ts";
-import { CreateReviewInput, UpdateReviewInput } from "./index.ts";
+  ReviewRepository
+} from "../infrastructure/index";
+import { CreateReviewInput, UpdateReviewInput } from "./index";
 
 @Resolver(() => Review)
-export class ReviewService {
+export class ReviewResolver {
   constructor(
     private readonly reviewRepository: ReviewRepository,
     private readonly eventProducer: EventProducerService
@@ -52,7 +52,7 @@ export class ReviewService {
       comment: createReviewInput.comment ?? "",
       userId: userId,
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     };
     const review = await this.reviewRepository.create(reviewData);
     if (review.rating < 4) {
@@ -65,8 +65,8 @@ export class ReviewService {
           review.rating < 3
             ? "critical"
             : review.rating === 3
-            ? "moderate"
-            : "good",
+              ? "moderate"
+              : "good"
       };
       await this.eventProducer.produceEvent(reviewCreated);
     }
@@ -86,7 +86,7 @@ export class ReviewService {
         ...existingReview,
         rating: updateReviewInput.rating ?? existingReview.rating,
         comment: updateReviewInput.comment ?? existingReview.comment,
-        updatedAt: new Date(),
+        updatedAt: new Date()
       };
       const updatedReview = await this.reviewRepository.update(id, updatedData);
       if (updatedReview!.rating < 4) {
@@ -99,8 +99,8 @@ export class ReviewService {
             updatedReview!.rating < 3
               ? "critical"
               : updatedReview!.rating === 3
-              ? "moderate"
-              : "good",
+                ? "moderate"
+                : "good"
         };
         await this.eventProducer.produceEvent(reviewUpdated);
       }

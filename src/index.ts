@@ -1,1 +1,1 @@
-export * from "./app.module.ts";
+export * from "./app.module";

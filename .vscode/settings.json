@@ -1,0 +1,31 @@
+{
+  "cSpell.words": [
+    "asciifolding",
+    "autoincrement",
+    "bitnami",
+    "dbgenerated",
+    "dtos",
+    "envsubst",
+    "kafkajs",
+    "Kamil",
+    "keepalive",
+    "Myśliwiec",
+    "nestframework",
+    "ngram",
+    "nodelay",
+    "nopush",
+    "ossp",
+    "Partitioner",
+    "Partitioners",
+    "pkey",
+    "Proto",
+    "referer",
+    "SAMEORIGIN",
+    "sasl",
+    "sendfile",
+    "vercel",
+    "xpack"
+  ],
+  "js/ts.implicitProjectConfig.experimentalDecorators": true,
+  "deno.enable": true
+}

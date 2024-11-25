@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export class MockSearchService {
   createCustomIndex(index: string): Promise<void> {
     return Promise.resolve();

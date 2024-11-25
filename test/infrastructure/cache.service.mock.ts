@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export class MockCacheService {
   get(key: string): Promise<string | null> {
     return Promise.resolve(null);

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { Product } from "../domain/index.ts";
-import { prisma } from "./index.ts";
+import { Product } from "../domain/index";
+import { prisma } from "./index";
 
 @Injectable()
 export class ProductRepository {
@@ -9,7 +9,7 @@ export class ProductRepository {
   async create(product: Omit<Product, "id">): Promise<Product> {
     try {
       const createdProduct = await prisma.product.create({
-        data: product,
+        data: product
       });
       this.logger.log(`Product created successfully`);
       return createdProduct;
@@ -45,7 +45,7 @@ export class ProductRepository {
     try {
       const updatedProduct = await prisma.product.update({
         where: { id },
-        data: product,
+        data: product
       });
       this.logger.log(`Product with id updated successfully`);
       return updatedProduct;
@@ -58,7 +58,7 @@ export class ProductRepository {
   async remove(id: string): Promise<Product | null> {
     try {
       const deletedProduct = await prisma.product.delete({
-        where: { id },
+        where: { id }
       });
       this.logger.log(`Product with id deleted successfully`);
       return deletedProduct;

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { Review } from "../domain/index.ts";
-import { prisma } from "./index.ts";
+import { Review } from "../domain/index";
+import { prisma } from "./index";
 
 @Injectable()
 export class ReviewRepository {
@@ -36,7 +36,7 @@ export class ReviewRepository {
   ): Promise<Review | null> {
     try {
       const review = await prisma.review.findFirst({
-        where: { userId, productId },
+        where: { userId, productId }
       });
       this.logger.log(`Review retrieved successfully`);
       return review;
@@ -61,7 +61,7 @@ export class ReviewRepository {
     try {
       const updatedReview = await prisma.review.update({
         where: { id },
-        data: review,
+        data: review
       });
       this.logger.log(`Review with id updated successfully`);
       return updatedReview;

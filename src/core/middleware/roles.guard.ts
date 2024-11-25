@@ -4,9 +4,9 @@ import {
   ForbiddenException,
   Injectable,
   Logger,
-  UnauthorizedException,
+  UnauthorizedException
 } from "@nestjs/common";
-import { ReviewRepository } from "../../infrastructure/index.ts";
+import { ReviewRepository } from "../../infrastructure/index";
 
 @Injectable()
 export class AdminGuard implements CanActivate {

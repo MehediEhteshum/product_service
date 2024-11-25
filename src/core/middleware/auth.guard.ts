@@ -3,7 +3,7 @@ import {
   ExecutionContext,
   Injectable,
   Logger,
-  UnauthorizedException,
+  UnauthorizedException
 } from "@nestjs/common";
 import jwt from "jsonwebtoken";
 import process from "node:process";

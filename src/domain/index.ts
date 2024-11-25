@@ -1,3 +1,3 @@
-export * from "./event.ts";
-export * from "./product.entity.ts";
-export * from "./review.entity.ts";
+export * from "./event";
+export * from "./product.entity";
+export * from "./review.entity";
