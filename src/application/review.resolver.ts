@@ -7,6 +7,7 @@ import {
   ReviewRepository
 } from "../infrastructure/index";
 import { CreateReviewInput, UpdateReviewInput } from "./index";
+import { Context as nodeVmContext } from "vm";
 
 @Resolver(() => Review)
 export class ReviewResolver {
@@ -37,7 +38,7 @@ export class ReviewResolver {
   @UseGuards(AuthGuard)
   async create(
     @Args("createReviewInput") createReviewInput: CreateReviewInput,
-    @Context() context: any
+    @Context() context: nodeVmContext
   ): Promise<Review> {
     const userId = context.req.user.id;
     const existingReview = await this.reviewRepository.findByUserIdAndProductId(
