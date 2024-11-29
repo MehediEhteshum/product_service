@@ -1,5 +1,5 @@
 // required for vercel deployment
 
-import app from "../main.js";
+import app from "../dist/main.js";
 
 export default app;
