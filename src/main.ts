@@ -4,26 +4,27 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { AppModule } from "./app.module";
 import { init } from "./core/index";
 
-let app;
+let app: NestExpressApplication | null = null;
 
-async function bootstrap() {
-  app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const port = process.env.PORT ?? 3000;
+export async function bootstrap() {
+  if (!app) {
+    app = await NestFactory.create<NestExpressApplication>(AppModule);
+    const port = process.env.PORT ?? 3000;
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true
-    })
-  );
-
-  await app.listen(port);
-  let url = await app.getUrl();
-  url = url == `http://[::]:${port}` ? `http://127.0.0.1:${port}` : url;
-  console.log(`Application is running on: ${url}/products`);
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidNonWhitelisted: true
+      })
+    );
+    await app.listen(port);
+    let url = await app.getUrl();
+    url = url == `http://[::]:${port}` ? `http://127.0.0.1:${port}` : url;
+    console.log(`Application is running on: ${url}/products`);
+  }
+  return app;
 }
+
 init();
 bootstrap();
-
-export default app;
