@@ -4,8 +4,10 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { init } from "./core/index";
 import { AppModule } from "./index";
 
+let app;
+
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = process.env.PORT ?? 3000;
 
   app.useGlobalPipes(
@@ -23,3 +25,5 @@ async function bootstrap() {
 }
 init();
 bootstrap();
+
+export default app;
