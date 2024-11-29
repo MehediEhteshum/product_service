@@ -1,8 +1,8 @@
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
+import { AppModule } from "./app.module";
 import { init } from "./core/index";
-import { AppModule } from "./index";
 
 let app;
 
