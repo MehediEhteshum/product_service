@@ -43,16 +43,16 @@ export class MockProductRepository {
       updatedAt: new Date()
     });
   }
-  create(productData: any): Promise<Product> {
+  create(product: Omit<Product, "id">): Promise<Product> {
     return Promise.resolve({
       id: "3",
-      ...productData,
+      ...product,
       createdAt: new Date(),
       updatedAt: new Date()
     });
   }
-  update(id: string, updatedData: any): Promise<Product> {
-    return Promise.resolve({ id, ...updatedData, updatedAt: new Date() });
+  update(id: string, product: Product): Promise<Product> {
+    return Promise.resolve({ ...product, id, updatedAt: new Date() });
   }
   remove(id: string): Promise<Product> {
     return Promise.resolve({
