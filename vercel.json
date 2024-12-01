@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "product-service-nestjs-api",
   "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
   "functions": {
     "api/**/*": {
