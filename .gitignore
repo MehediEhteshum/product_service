@@ -64,3 +64,4 @@ cloud/ssh-key-vm0.key
 cloud/ssh-key-vm0.key.pub
 cloud/ssh-key-vm1.key
 cloud/ssh-key-vm1.key.pub
+.vercel
