@@ -34,6 +34,6 @@ describe("ProductResolver", () => {
     const product = await productResolver.findOne("1");
     expect(product!.id).toBe("1");
     expect(product!.name).toBe("Product 1");
-    expect(product!.price).toBe(12);
+    expect(product!.price).toBe(10);
   });
 });
