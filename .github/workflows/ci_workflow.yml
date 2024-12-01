@@ -35,7 +35,3 @@ jobs:
           npm run lint
           npm run format
           npm test
-
-      - name: Vercel prod 
-        if: ${{ success() }}
-        run: curl -X POST -H "Authorization: Bearer ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}" "https://api.vercel.com/v1/integrations/deploy/prj_iBOf67y7p3bnT4VZcElm7eEt0IC7/uVTvynCHE0"
