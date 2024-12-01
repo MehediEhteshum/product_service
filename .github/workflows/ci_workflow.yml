@@ -40,9 +40,11 @@ jobs:
         if: ${{ success() }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_NAME: ${{ secrets.VERCEL_PROJECT_NAME }}
         run: |
+          npx vercel link --yes --project $VERCEL_PROJECT_NAME
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            npx vercel --token $VERCEL_TOKEN --prod --yes --name product-service-nestjs-api
+            npx vercel --token $VERCEL_TOKEN --prod --yes
           else
-            npx vercel --token $VERCEL_TOKEN --yes --name product-service-nestjs-api
+            npx vercel --token $VERCEL_TOKEN --yes
           fi
