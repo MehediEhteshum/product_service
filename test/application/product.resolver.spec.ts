@@ -19,7 +19,7 @@ describe("ProductResolver", () => {
       searchService as unknown as SearchService
     );
     const products = await productResolver.findAll();
-    expect(products.length).toBe(2);
+    expect(products.length).toBe(3);
   });
 
   it("findOne should return a product by ID", async () => {
