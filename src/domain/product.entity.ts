@@ -3,29 +3,29 @@ import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 @ObjectType()
 export class Product {
   @Field(() => ID)
-  id: string;
+  id!: string;
 
   @Field()
-  name: string;
+  name!: string;
 
   @Field({ nullable: true })
-  description: string;
+  description!: string;
 
   @Field({ nullable: true })
-  imageUrl: string;
+  imageUrl!: string;
 
   @Field({ nullable: true })
-  category: string;
+  category!: string;
 
   @Field()
-  price: number;
+  price!: number;
 
   @Field(() => Int)
-  stock: number;
+  stock!: number;
 
   @Field()
-  createdAt: Date;
+  createdAt!: Date;
 
   @Field()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

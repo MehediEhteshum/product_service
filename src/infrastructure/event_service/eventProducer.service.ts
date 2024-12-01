@@ -1,11 +1,11 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Admin, Kafka, Partitioners, Producer } from "kafkajs";
-import { Event, EventType } from "../../domain/index.ts";
+import { Event, EventType } from "../../domain/index";
 
 interface EventData {
   eventId: string;
   eventType: EventType;
-  data: Record<string, any>;
+  data: Record<string, object>;
   tag: string;
 }
 
@@ -20,10 +20,10 @@ export class EventProducerService {
   constructor() {
     this.kafka = new Kafka({
       brokers: [process.env.EVENT_BROKER_URL || "localhost:9092"],
-      clientId: process.env.EVENT_BROKER_CLIENT_ID || "product-service",
+      clientId: process.env.EVENT_BROKER_CLIENT_ID || "product-service"
     });
     this.producer = this.kafka.producer({
-      createPartitioner: Partitioners.DefaultPartitioner,
+      createPartitioner: Partitioners.DefaultPartitioner
     });
     this.admin = this.kafka.admin();
     this.connect();
@@ -35,7 +35,9 @@ export class EventProducerService {
       this.logger.log("Event producer connected successfully");
     } catch (error) {
       this.logger.error("Failed to connect to Event producer", error);
-      throw new Error(`Failed to connect to Event producer: ${error.message}`);
+      throw new Error(
+        `Failed to connect to Event producer: ${(error as Error).message}`
+      );
     }
   }
 
@@ -56,11 +58,11 @@ export class EventProducerService {
             configEntries: [
               {
                 name: "retention.ms",
-                value: retentionMs.toString(),
-              },
-            ],
-          },
-        ],
+                value: retentionMs.toString()
+              }
+            ]
+          }
+        ]
       });
       this.logger.log(
         `Created topic with a retention policy of ${retentionMs}ms`
@@ -74,7 +76,7 @@ export class EventProducerService {
       eventId: event.id,
       eventType: event.type,
       data: event.data,
-      tag: event.tag,
+      tag: event.tag
     };
 
     try {
@@ -82,12 +84,12 @@ export class EventProducerService {
 
       await this.producer.send({
         topic: event.topic,
-        messages: [{ value: JSON.stringify(eventData) }],
+        messages: [{ value: JSON.stringify(eventData) }]
       });
       this.logger.log(`Event produced successfully: ${event.type}`);
     } catch (error) {
       this.logger.error("Failed to produce event", error);
-      throw new Error(`Failed to produce event: ${error.message}`);
+      throw new Error(`Failed to produce event: ${(error as Error).message}`);
     }
   }
 

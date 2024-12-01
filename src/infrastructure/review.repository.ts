@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { Review } from "../domain/index.ts";
-import { prisma } from "./index.ts";
+import { Review } from "../domain/index";
+import { prisma } from "./index";
 
 @Injectable()
 export class ReviewRepository {
@@ -13,7 +13,7 @@ export class ReviewRepository {
       return review;
     } catch (error) {
       this.logger.error(`Failed to retrieve review with id`, error);
-      throw new Error(`Failed to retrieve review: ${error.message}`);
+      throw new Error(`Failed to retrieve review: ${(error as Error).message}`);
     }
   }
 
@@ -24,7 +24,9 @@ export class ReviewRepository {
       return reviews;
     } catch (error) {
       this.logger.error(`Failed to retrieve reviews`, error);
-      throw new Error(`Failed to retrieve reviews: ${error.message}`);
+      throw new Error(
+        `Failed to retrieve reviews: ${(error as Error).message}`
+      );
     }
   }
 
@@ -34,13 +36,13 @@ export class ReviewRepository {
   ): Promise<Review | null> {
     try {
       const review = await prisma.review.findFirst({
-        where: { userId, productId },
+        where: { userId, productId }
       });
       this.logger.log(`Review retrieved successfully`);
       return review;
     } catch (error) {
       this.logger.error(`Failed to retrieve review`, error);
-      throw new Error(`Failed to retrieve review: ${error.message}`);
+      throw new Error(`Failed to retrieve review: ${(error as Error).message}`);
     }
   }
 
@@ -51,7 +53,7 @@ export class ReviewRepository {
       return createdReview;
     } catch (error) {
       this.logger.error(`Failed to create review`, error);
-      throw new Error(`Failed to create review: ${error.message}`);
+      throw new Error(`Failed to create review: ${(error as Error).message}`);
     }
   }
 
@@ -59,13 +61,13 @@ export class ReviewRepository {
     try {
       const updatedReview = await prisma.review.update({
         where: { id },
-        data: review,
+        data: review
       });
       this.logger.log(`Review with id updated successfully`);
       return updatedReview;
     } catch (error) {
       this.logger.error(`Failed to update review with id`, error);
-      throw new Error(`Failed to update review: ${error.message}`);
+      throw new Error(`Failed to update review: ${(error as Error).message}`);
     }
   }
 
@@ -75,7 +77,7 @@ export class ReviewRepository {
       this.logger.log(`Reviews deleted successfully`);
     } catch (error) {
       this.logger.error(`Failed to delete reviews`, error);
-      throw new Error(`Failed to delete reviews: ${error.message}`);
+      throw new Error(`Failed to delete reviews: ${(error as Error).message}`);
     }
   }
 
@@ -86,7 +88,7 @@ export class ReviewRepository {
       return deletedReview;
     } catch (error) {
       this.logger.error(`Failed to delete review with id`, error);
-      throw new Error(`Failed to delete review: ${error.message}`);
+      throw new Error(`Failed to delete review: ${(error as Error).message}`);
     }
   }
 }

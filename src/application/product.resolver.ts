@@ -1,20 +1,20 @@
 import { UseGuards } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { AdminGuard, AuthGuard, TTL } from "../core/index.ts";
-import { Product } from "../domain/index.ts";
+import { AdminGuard, AuthGuard, TTL } from "../core/index";
+import { Product } from "../domain/index";
 import {
   CacheService,
   ProductRepository,
-  SearchService,
-} from "../infrastructure/index.ts";
+  SearchService
+} from "../infrastructure/index";
 import {
   CreateProductInput,
   SearchProductInput,
-  UpdateProductInput,
-} from "./index.ts";
+  UpdateProductInput
+} from "./index";
 
 @Resolver(() => Product)
-export class ProductService {
+export class ProductResolver {
   constructor(
     private productRepository: ProductRepository,
     private cacheStore: CacheService,
@@ -65,7 +65,9 @@ export class ProductService {
         );
       }
     }
-    foundProduct && (await this.searchService.index("products", foundProduct));
+    if (foundProduct) {
+      await this.searchService.index("products", foundProduct);
+    }
     return foundProduct;
   }
 
@@ -81,7 +83,7 @@ export class ProductService {
       imageUrl: createProductInput.imageUrl ?? "",
       category: createProductInput.category ?? "",
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     };
     const createdProduct = await this.productRepository.create(productData);
     if (createdProduct) {
@@ -112,7 +114,7 @@ export class ProductService {
         category: updateProductInput.category ?? existingProduct.category,
         price: updateProductInput.price ?? existingProduct.price,
         stock: updateProductInput.stock ?? existingProduct.stock,
-        updatedAt: new Date(),
+        updatedAt: new Date()
       };
       const updatedProduct = await this.productRepository.update(
         id,
@@ -149,8 +151,8 @@ export class ProductService {
   async search(
     @Args("searchProductInput") searchProductInput: SearchProductInput
   ): Promise<Product[]> {
-    let must: object[] = [];
-    let filter: object[] = [];
+    const must: object[] = [];
+    const filter: object[] = [];
 
     if (searchProductInput.query) {
       must.push({
@@ -160,26 +162,26 @@ export class ProductService {
               match: {
                 name: {
                   query: searchProductInput.query,
-                  analyzer: "autocomplete",
-                },
-              },
+                  analyzer: "autocomplete"
+                }
+              }
             },
             {
               match: {
-                description: searchProductInput.query,
-              },
-            },
+                description: searchProductInput.query
+              }
+            }
           ],
-          minimum_should_match: 1,
-        },
+          minimum_should_match: 1
+        }
       });
     }
 
     if (searchProductInput.category) {
       filter.push({
         match: {
-          category: searchProductInput.category,
-        },
+          category: searchProductInput.category
+        }
       });
     }
 
@@ -188,9 +190,9 @@ export class ProductService {
         range: {
           price: {
             gte: searchProductInput.minPrice ?? 0,
-            lte: searchProductInput.maxPrice ?? Infinity,
-          },
-        },
+            lte: searchProductInput.maxPrice ?? Infinity
+          }
+        }
       });
     }
 
@@ -198,9 +200,9 @@ export class ProductService {
       filter.push({
         range: {
           stock: {
-            gte: searchProductInput.minStock,
-          },
-        },
+            gte: searchProductInput.minStock
+          }
+        }
       });
     }
 
@@ -209,9 +211,9 @@ export class ProductService {
         range: {
           updatedAt: {
             gte: searchProductInput.dateRange.start ?? new Date(0),
-            lte: searchProductInput.dateRange.end ?? new Date(),
-          },
-        },
+            lte: searchProductInput.dateRange.end ?? new Date()
+          }
+        }
       });
     }
 

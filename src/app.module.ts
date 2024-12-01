@@ -1,14 +1,14 @@
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
-import { ProductService, ReviewService } from "./application/index.ts";
+import { ProductResolver, ReviewResolver } from "./application/index";
 import {
   CacheService,
   EventProducerService,
   ProductRepository,
   ReviewRepository,
-  SearchService,
-} from "./infrastructure/index.ts";
+  SearchService
+} from "./infrastructure/index";
 
 @Module({
   imports: [
@@ -18,17 +18,17 @@ import {
       playground: true, // false for production
       path: "/products",
       debug: true, // false for production
-      introspection: true, // false for production
-    }),
+      introspection: true // false for production
+    })
   ],
   providers: [
+    ProductResolver,
+    ReviewResolver,
     ProductRepository,
     ReviewRepository,
-    ProductService,
-    ReviewService,
     CacheService,
     SearchService,
-    EventProducerService,
-  ],
+    EventProducerService
+  ]
 })
 export class AppModule {}

@@ -4,7 +4,7 @@ import {
   InputType,
   Int,
   ObjectType,
-  PartialType,
+  PartialType
 } from "@nestjs/graphql";
 import {
   IsNotEmpty,
@@ -12,7 +12,7 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  Min,
+  Min
 } from "class-validator";
 
 @InputType("CreateProductInput")
@@ -20,32 +20,32 @@ export class CreateProductInput {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name!: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  description: string;
+  description!: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  imageUrl: string;
+  imageUrl!: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  category: string;
+  category!: string;
 
   @Field()
   @IsNumber()
   @Min(0)
-  price: number;
+  price!: number;
 
   @Field(() => Int)
   @IsNumber()
   @Min(0)
-  stock: number;
+  stock!: number;
 }
 
 @InputType("UpdateProductInput")
@@ -56,11 +56,11 @@ export class UpdateProductInput extends PartialType(CreateProductInput) {}
 class DateRange {
   @Field(() => Date, { nullable: true })
   @IsOptional()
-  start: Date;
+  start!: Date;
 
   @Field(() => Date, { nullable: true })
   @IsOptional()
-  end: Date;
+  end!: Date;
 }
 
 @InputType("SearchProductInput")
@@ -68,33 +68,33 @@ export class SearchProductInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  query: string;
+  query!: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  category: string;
+  category!: string;
 
   @Field(() => Float, { nullable: true })
   @IsOptional()
   @IsNumber()
   @Min(0)
-  maxPrice: number;
+  maxPrice!: number;
 
   @Field(() => Float, { nullable: true })
   @IsOptional()
   @IsNumber()
   @Min(0)
-  minPrice: number;
+  minPrice!: number;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsNumber()
   @Min(0)
-  minStock: number;
+  minStock!: number;
 
   @Field(() => DateRange, { nullable: true })
   @IsOptional()
   @IsObject()
-  dateRange: DateRange;
+  dateRange!: DateRange;
 }

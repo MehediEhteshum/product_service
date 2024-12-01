@@ -1,7 +1,7 @@
 import { Client } from "@elastic/elasticsearch";
 import { Injectable, Logger } from "@nestjs/common";
-import { CUSTOM_INDEX_SETTING } from "../../core/index.ts";
-import { Product } from "../../domain/index.ts";
+import { CUSTOM_INDEX_SETTING } from "../../core/index";
+import { Product } from "../../domain/index";
 
 @Injectable()
 export class SearchService {
@@ -18,7 +18,7 @@ export class SearchService {
       if (!indexExists) {
         await this.searchClient.indices.create({
           index: index,
-          body: CUSTOM_INDEX_SETTING,
+          body: CUSTOM_INDEX_SETTING
         });
         this.logger.log(
           `Index ${index} with custom settings created successfully.`
@@ -37,7 +37,7 @@ export class SearchService {
       await this.searchClient.index({
         index: index,
         id: product.id,
-        body: product,
+        body: product
       });
       this.logger.log(`Indexed product: ${product.name}`);
     } catch (error) {
@@ -64,14 +64,14 @@ export class SearchService {
           query: {
             bool: {
               must,
-              filter,
-            },
+              filter
+            }
           },
           sort: [
             { _score: { order: "desc" } },
-            { updatedAt: { order: "desc" } },
-          ],
-        },
+            { updatedAt: { order: "desc" } }
+          ]
+        }
       });
 
       this.logger.log(`Search successful: ${response.hits.hits.length} hits`);

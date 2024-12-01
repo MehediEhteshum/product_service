@@ -1,24 +1,30 @@
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { init } from "./core/index.ts";
-import { AppModule } from "./index.ts";
+import { NestExpressApplication } from "@nestjs/platform-express";
+import { AppModule } from "./app.module";
+import { init } from "./core/index";
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const port = process.env.PORT ?? 3000;
+let app: NestExpressApplication | null = null;
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    })
-  );
+export async function bootstrap() {
+  if (!app) {
+    app = await NestFactory.create<NestExpressApplication>(AppModule);
+    const port = process.env.PORT ?? 3000;
 
-  await app.listen(port);
-  let url = await app.getUrl();
-  url = url == `http://[::]:${port}` ? `http://127.0.0.1:${port}` : url;
-  console.log(`Application is running on: ${url}/products`);
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidNonWhitelisted: true
+      })
+    );
+    await app.listen(port);
+    let url = await app.getUrl();
+    url = url == `http://[::]:${port}` ? `http://127.0.0.1:${port}` : url;
+    console.log(`Application is running on: ${url}/products`);
+  }
+  return app;
 }
+
 init();
 bootstrap();

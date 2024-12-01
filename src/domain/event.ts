@@ -1,6 +1,6 @@
 export enum EventType {
   ReviewCreated = "review.created",
-  ReviewUpdated = "review.updated",
+  ReviewUpdated = "review.updated"
 }
 
 export interface Event {

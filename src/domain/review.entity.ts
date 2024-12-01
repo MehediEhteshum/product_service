@@ -3,23 +3,23 @@ import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 @ObjectType()
 export class Review {
   @Field(() => ID)
-  id: string;
+  id!: string;
 
   @Field(() => Int)
-  rating: number;
+  rating!: number;
 
   @Field({ nullable: true })
-  comment: string;
+  comment!: string;
 
   @Field(() => ID)
-  productId: string;
+  productId!: string;
 
   @Field(() => ID)
-  userId: string;
+  userId!: string;
 
   @Field()
-  createdAt: Date;
+  createdAt!: Date;
 
   @Field()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

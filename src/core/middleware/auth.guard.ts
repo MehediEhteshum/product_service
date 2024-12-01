@@ -3,9 +3,9 @@ import {
   ExecutionContext,
   Injectable,
   Logger,
-  UnauthorizedException,
+  UnauthorizedException
 } from "@nestjs/common";
-import jwt from "jsonwebtoken";
+import { JwtPayload, verify } from "jsonwebtoken";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -27,10 +27,10 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const decoded = jwt.verify(
+      const decoded = verify(
         token,
         process.env.ACCESS_TOKEN_SECRET as string
-      ) as jwt.JwtPayload;
+      ) as JwtPayload;
       request.user = decoded.user ?? {};
       return true;
     } catch (err) {
