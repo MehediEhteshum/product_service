@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  run-lint-and-test:
+  run-lint-format-and-test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -33,4 +33,5 @@ jobs:
       - name: Run lint and tests
         run: |
           npm run lint
+          npm run format
           npm test
